@@ -1,0 +1,73 @@
+// For format details, see https://aka.ms/devcontainer.json.
+{
+    // A name for the dev container displayed in the UI.
+    "name": "Fd.io",
+
+    "build": {
+        // Required when using a Dockerfile. The location of a Dockerfile that
+        // defines the contents of the container. The path is relative to the
+        // devcontainer.json file.
+        "dockerfile": "Dockerfile",
+
+        // Path that the Docker build should be run from relative to
+        // devcontainer.json. For example, a value of ".." would allow you to
+        // reference content in sibling directories. Defaults to ".".
+        "context": "..",
+
+        // A set of name-value pairs containing Docker image build arguments
+        // that should be passed when building a Dockerfile. Environment and
+        // pre-defined variables may be referenced in the values. Defaults to
+        // not set. For example: "build": { "args": { "MYARG": "MYVALUE",
+        // "MYARGFROMENVVAR": "${localEnv:VARIABLE_NAME}" } }
+        "args": {
+            "UBUNTU_VERSION": "22.04"
+        }
+    },
+
+    // Use 'forwardPorts' to make a list of ports inside the container available
+    // locally.
+    // "forwardPorts": [ 5000 ],
+
+    // Uncomment the next line to run commands after the container is created -
+    // for example installing curl.
+    "postCreateCommand": "bash .devcontainer/postCreateCommand.sh",
+
+    // Uncomment when using a ptrace-based debugger like C++, Go, and Rust
+    "runArgs": [
+        "--name", "${localEnv:USER}_devcontainer"
+    ],
+
+    // Uncomment to use the Docker CLI from inside the container. See
+    // https://aka.ms/vscode-remote/samples/docker-from-docker.
+    "mounts": [
+        "source=${localEnv:HOME}/.ssh/,target=/root/.ssh/,type=bind",
+        "source=${localEnv:HOME}/.aws/,target=/root/.aws/,type=bind"
+    ],
+
+    // Product specific properties, defined in supporting tools.
+    "customizations": {
+        // Configure properties specific to VS Code.
+        "vscode": {
+            // Add the IDs of extensions you want installed when the container
+            // is created.
+            "extensions": [
+                "eamodio.gitlens",
+                "RobbOwen.synthwave-vscode",
+                "ms-python.python",
+                "ms-python.vscode-pylance"
+            ]
+        }
+    },
+
+    // Uncomment to connect as a non-root user if you've added one. See
+    // https://aka.ms/vscode-remote/containers/non-root.
+    // "remoteUser": "vscode"
+
+    // An object of dev container features and related options to be added into
+    // your primary container. The specific options that are available varies by
+    // feature, so see its documentation for additional details.
+    "features": {
+        "docker-in-docker": "latest",
+        "github-cli": "latest"
+    }
+}
