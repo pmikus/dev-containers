@@ -10,7 +10,6 @@ RUN apt-get update -y \
     curl \
     gcc \
     git \
-    gnupg \
     iputils-ping \
     iproute2 \
     python3 \
@@ -20,7 +19,6 @@ RUN apt-get update -y \
     python3-setuptools \
     python3-software-properties \
     python3-wheel \
-    software-properties-common \
     tmux \
     wget \
  && rm -f /usr/lib/python3.11/EXTERNALLY-MANAGED \
@@ -38,4 +36,4 @@ RUN wget https://github.com/neovim/neovim/releases/download/v0.9.1/nvim-linux64.
 FROM base
 
 # Initialize.
-CMD ["/bin/tmux"]
+CMD ["/bin/tmux", "new-session", "-d", "-s", "container"]
