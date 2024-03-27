@@ -1,0 +1,9 @@
+version: "3"
+services:
+  dev:
+    build: "."
+    command: "/bin/tmux"
+    volumes:
+      - "${HOME}/workspace/:/root/workspace/"
+      - "${HOME}/.config/nvim/:/root/.config/nvim/"
+      - "${HOME}/.tmux.conf:/root/.tmux.conf"

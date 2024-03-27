@@ -34,15 +34,18 @@ RUN apt-get update -y \
  && apt-get install --no-install-recommends -y \
     curl \
     git \
+    tmux \
     wget \
  && rm -f /usr/lib/python3.11/EXTERNALLY-MANAGED \
  && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*.deb /usr/share/man/* \
  && apt-get autoremove \
- && apt-get clean autoclean
+ && apt-get clean autoclean \
+ && git clone https://github.com/tmux-plugins/tpm /root/.tmux/plugins/tpm \
+ && /root/.tmux/plugins/tpm/bin/install_plugins
 
 COPY --from=nvim_compile /root/neovim/build/nvim-linux64.deb .
 
 RUN dpkg -i nvim-linux64.deb && rm nvim-linux64.deb
 
 # Initialize.
-CMD ["/bin/nvim"]
+CMD ["/bin/tmux"]
