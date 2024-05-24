@@ -71,5 +71,7 @@ RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhisto
 
 FROM base
 
+COPY postCreateCommand.sh /
+
 # Initialize.
 CMD ["/bin/bash"]
