@@ -23,7 +23,6 @@ jobs:
       matrix:
         image:
           - "ai-base"
-
     steps:
       - name: "Check out the codebase."
         uses: "actions/checkout@v4"
@@ -51,7 +50,17 @@ jobs:
       - name: "Build Docker image"
         id: "docker_build"
         uses: "docker/bake-action@v4"
+        if: github.event_name == 'pull_request'
         with:
-          builder: "${{ steps.buildx.outputs.name }}"
+          builder: "${{ steps.docker_buildx.outputs.name }}"
           push: false
+          workdir: "${{ matrix.image }}/."
+
+      - name: "Push Docker image"
+        id: "docker_build"
+        uses: "docker/bake-action@v4"
+        if: github.event_name == 'push'
+        with:
+          builder: "${{ steps.docker_buildx.outputs.name }}"
+          push: true
           workdir: "${{ matrix.image }}/."
