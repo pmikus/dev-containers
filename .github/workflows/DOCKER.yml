@@ -57,7 +57,7 @@ jobs:
           workdir: "${{ matrix.image }}/."
 
       - name: "Push Docker image"
-        id: "docker_build"
+        id: "docker_build_push"
         uses: "docker/bake-action@v4"
         if: github.event_name == 'push'
         with:
