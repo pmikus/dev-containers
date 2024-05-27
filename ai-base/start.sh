@@ -1,11 +1,21 @@
 #!/bin/bash
 
-set -e  # Exit the script if any statement returns a non-true return value
+set -e
 
 # Start nginx service
 start_nginx() {
     echo "Starting Nginx service..."
     service nginx start
+}
+
+# Execute script if exists
+execute_script() {
+    local script_path=$1
+    local script_msg=$2
+    if [[ -f ${script_path} ]]; then
+        echo "${script_msg}"
+        bash ${script_path}
+    fi
 }
 
 # Setup ssh
@@ -33,5 +43,7 @@ setup_ssh() {
 }
 
 start_nginx
+execute_script "/pre_start.sh" "Running pre-start script..."
 setup_ssh
+execute_script "/post_start.sh" "Running post-start script..."
 sleep infinity
