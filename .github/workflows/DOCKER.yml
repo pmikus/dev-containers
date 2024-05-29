@@ -25,6 +25,9 @@ jobs:
           - "ai-base"
           - "invokeai"
     steps:
+      - name: Delete huge unnecessary tools folder
+        run: "rm -rf /opt/hostedtoolcache"
+
       - name: "Check out the codebase."
         uses: "actions/checkout@v4"
 
