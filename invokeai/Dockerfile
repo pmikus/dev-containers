@@ -12,8 +12,7 @@ ENV BASE_RELEASE_VERSION=${BASE_RELEASE_VERSION}
 RUN apt update --yes && \
     apt install --yes \
         python3-opencv \
-        libopencv-dev \
-        rust && \
+        libopencv-dev && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -23,7 +22,7 @@ RUN python3 -m venv ${INVOKEAI_ROOT}/venv
 ENV PATH="${INVOKEAI_ROOT}/venv/bin:$PATH"
 
 WORKDIR ${INVOKEAI_ROOT}
-ARG GPU_DRIVER=cuda
+ARG GPU_DRIVER
 ARG TARGETPLATFORM="linux/amd64"
 
 RUN python3 -m pip install --upgrade pip && \
