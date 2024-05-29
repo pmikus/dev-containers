@@ -3,7 +3,7 @@ variable "RELEASE" {
 }
 
 group "default" {
-    targets = ["cpu", "cuda"]
+    targets = ["cuda"]
 }
 
 target "cpu" {
