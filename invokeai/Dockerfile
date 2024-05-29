@@ -9,13 +9,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG BASE_RELEASE_VERSION
 ENV BASE_RELEASE_VERSION=${BASE_RELEASE_VERSION}
 
-RUN apt update --yes && \
-    apt install --yes \
-        python3-opencv \
-        libopencv-dev && \
-    apt clean && \
-    rm -rf /var/lib/apt/lists/*
-
 ENV INVOKEAI_ROOT=/workspace/invokeai
 
 RUN python3 -m venv ${INVOKEAI_ROOT}/venv
@@ -32,9 +25,8 @@ RUN python3 -m pip install --upgrade pip && \
         extra_index_url_arg="--extra-index-url https://download.pytorch.org/whl/cu121"; \
     fi && \
     pip install $extra_index_url_arg "InvokeAI[xformers]" && \
-    pip install pypatchmatch
-
-RUN mv ${INVOKEAI_ROOT} /invokeai
+    pip install pypatchmatch && \
+    mv ${INVOKEAI_ROOT} /invokeai
 
 # Start Scripts
 COPY pre_start.sh /
