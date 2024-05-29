@@ -23,6 +23,7 @@ jobs:
       matrix:
         image:
           - "ai-base"
+          - "invokeai"
     steps:
       - name: "Check out the codebase."
         uses: "actions/checkout@v4"
