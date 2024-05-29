@@ -109,8 +109,8 @@ RUN apt-get update --yes && \
     apt install --yes --no-install-recommends \
     python${PYTHON_VERSION}-dev \
     python${PYTHON_VERSION}-venv \
-    python${PYTHON_VERSION}-opencv \
-    python${PYTHON_VERSION}-distutils && \
+    python${PYTHON_VERSION}-distutils \
+    python3-opencv && \
 
     # Cleanup
     apt-get autoremove -y && \
