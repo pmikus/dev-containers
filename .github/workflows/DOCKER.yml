@@ -23,7 +23,8 @@ jobs:
       matrix:
         image:
           - "ai-base"
-          - "invokeai"
+          - "stable-diffusion-webui"
+          #- "invokeai"
     steps:
       - name: Delete huge unnecessary tools folder
         run: "rm -rf /opt/hostedtoolcache"

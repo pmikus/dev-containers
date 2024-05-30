@@ -15,16 +15,12 @@ ENV PATH="/workspace/venv/bin:$PATH"
 
 WORKDIR /workspace
 
-# Set up shell and update packages
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
 # Install system dependencies
 RUN apt update --yes && \
     apt upgrade --yes && \
     apt install --yes --no-install-recommends \
-    git openssh-server libglib2.0-0 libsm6 libgl1 libxrender1 libxext6 ffmpeg wget curl psmisc rsync vim bc nginx \
-    pkg-config libffi-dev libcairo2 libcairo2-dev libgoogle-perftools4 libtcmalloc-minimal4 apt-transport-https \
-    software-properties-common ca-certificates && \
+    libglib2.0-0 libxrender1 psmisc bc \
+    pkg-config libcairo2 libcairo2-dev libgoogle-perftools4 libtcmalloc-minimal4 apt-transport-https && \
     update-ca-certificates
 
 # Cache Models
@@ -35,7 +31,7 @@ RUN mkdir /sd-models && mkdir /cn-models && \
     wget https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.pth -O /cn-models/control_v11p_sd15_canny.pth
 
 # Create a virtual environment
-RUN python -m venv /workspace/venv && \
+RUN python3 -m venv /workspace/venv && \
     pip install -U --no-cache-dir jupyterlab jupyterlab_widgets ipykernel ipywidgets
 
 # Install Automatic1111's WebUI
@@ -43,7 +39,7 @@ RUN git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
     cd stable-diffusion-webui && \
     git checkout tags/${WEBUI_VERSION} && \
     pip install -r requirements_versions.txt && \
-    python -c "from launch import prepare_environment; prepare_environment()" --skip-torch-cuda-test
+    python3 -c "from launch import prepare_environment; prepare_environment()" --skip-torch-cuda-test
 
 # Install torch and xformers
 RUN cd /workspace/stable-diffusion-webui && \
@@ -65,7 +61,7 @@ RUN cd /workspace/stable-diffusion-webui && \
 
 COPY forge/cache-sd-model.py /workspace/stable-diffusion-webui/
 RUN cd /workspace/stable-diffusion-webui/ && \
-    python cache-sd-model.py --use-cpu=all --ckpt /sd-models/SDv1-5.ckpt
+    python3 cache-sd-model.py --use-cpu=all --ckpt /sd-models/SDv1-5.ckpt
 
 RUN mv /workspace/venv /venv && \
     mv /workspace/stable-diffusion-webui /stable-diffusion-webui && \
@@ -74,7 +70,6 @@ RUN mv /workspace/venv /venv && \
 COPY forge/relauncher.py forge/webui-user.sh /stable-diffusion-webui/
 
 # Start Scripts
-COPY scripts/pre_start.sh /pre_start.sh
+COPY pre_start.sh /pre_start.sh
 
-SHELL ["/bin/bash", "--login", "-c"]
 CMD [ "/start.sh" ]
