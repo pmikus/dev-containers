@@ -1,13 +1,5 @@
-variable "REGISTRY" {
-    default = "docker.io"
-}
-
-variable "REGISTRY_USER" {
-    default = "pmikus"
-}
-
-variable "APP" {
-    default = "stable-diffusion-webui"
+variable "IMAGE_REPOSITORY" {
+    default = "pmikus/stable-diffusion-webui"
 }
 
 variable "RELEASE" {
@@ -18,16 +10,8 @@ variable "CU_VERSION" {
     default = "121"
 }
 
-variable "BASE_IMAGE_REPOSITORY" {
-    default = "pmikus/ai-base"
-}
-
-variable "BASE_IMAGE_VERSION" {
-    default = "0.0.1-cuda12.4.1"
-}
-
 variable "CUDA_VERSION" {
-    default = "12.4.1"
+    default = "cuda12.4.1"
 }
 
 variable "TORCH_VERSION" {
@@ -38,13 +22,16 @@ variable "XFORMERS_VERSION" {
     default = "0.0.26.post1"
 }
 
+group "default" {
+    targets = ["12-4-1"]
+}
 
-target "default" {
+target "12-4-1" {
     dockerfile = "Dockerfile"
-    tags = ["${REGISTRY}/${REGISTRY_USER}/${APP}:${RELEASE}"]
+    tags = ["${IMAGE_REPOSITORY}:${RELEASE}-${CUDA_VERSION}"]
     args = {
         RELEASE = "${RELEASE}"
-        BASE_IMAGE = "${BASE_IMAGE_REPOSITORY}:${BASE_IMAGE_VERSION}"
+        BASE_IMAGE = "pmikus/ai-base:${RELEASE}-${CUDA_VERSION}"
         TORCH_VERSION = "${TORCH_VERSION}+cu${CU_VERSION}"
         XFORMERS_VERSION = "${XFORMERS_VERSION}"
         FORGE_COMMIT = "29be1da7cf2b5dccfc70fbdd33eb35c56a31ffb7"
