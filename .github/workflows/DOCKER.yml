@@ -24,7 +24,7 @@ jobs:
         image:
           #- "ai-base"
           - "stable-diffusion-comfyui"
-          - "invokeai"
+          - "stable-diffusion-invokeai"
     steps:
       - name: Delete huge unnecessary tools folder
         run: "rm -rf /opt/hostedtoolcache"
