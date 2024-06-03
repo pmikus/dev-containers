@@ -15,7 +15,7 @@ variable "CUDA_VERSION" {
 }
 
 group "default" {
-    targets = ["cuda"]
+    targets = ["12-4-1"]
 }
 
 target "12-4-1" {
