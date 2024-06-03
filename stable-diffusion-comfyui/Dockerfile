@@ -27,11 +27,16 @@ RUN python3 -m venv /workspace/venv && \
       jupyter-archive \
       jupyter_contrib_nbextensions
 
-RUN pip install --upgrade --no-cache-dir \
+RUN if [ "$CU_VERSION" = "cpu" ]; then \
+        extra_packages=""; \
+    else \
+        extra_package="xformers==${XFORMERS_VERSION}"; \
+    fi && \
+    pip install --upgrade --no-cache-dir \
       torch==${TORCH_VERSION} \
       torchvision \
       torchaudio \
-      xformers==${XFORMERS_VERSION} --index-url https://download.pytorch.org/whl/${CU_VERSION}
+      ${extra_packages} --index-url https://download.pytorch.org/whl/${CU_VERSION}
 
 # Install ComfyUI and ComfyUI Manager
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git && \

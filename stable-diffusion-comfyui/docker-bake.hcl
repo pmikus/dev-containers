@@ -1,5 +1,5 @@
 variable "IMAGE_REPOSITORY" {
-    default = "pmikus/stable-diffusion-comfyui"
+    default = "pmikus/stable-diffusion"
 }
 
 variable "RELEASE" {
@@ -23,24 +23,13 @@ variable "XFORMERS_VERSION" {
 }
 
 group "default" {
-    targets = ["cpu", "12-4-1"]
-}
-
-target "cpu" {
-    dockerfile = "Dockerfile"
-    tags = ["${IMAGE_REPOSITORY}:${RELEASE}-cpu"]
-    args = {
-        RELEASE = "${RELEASE}"
-        BASE_IMAGE = "pmikus/ai-base:${RELEASE}-cpu"
-        CU_VERSION = ""
-        TORCH_VERSION = "${TORCH_VERSION}"
-        XFORMERS_VERSION = "${XFORMERS_VERSION}"
-    }
+    targets = ["12-4-1"]
 }
 
 target "12-4-1" {
     dockerfile = "Dockerfile"
-    tags = ["${IMAGE_REPOSITORY}:${RELEASE}-${CUDA_VERSION}"]
+    tags = ["${IMAGE_REPOSITORY}:comfy-ui-${RELEASE}-${CUDA_VERSION}"]
+    platforms = ["linux/amd64"]
     args = {
         RELEASE = "${RELEASE}"
         BASE_IMAGE = "pmikus/ai-base:${RELEASE}-${CUDA_VERSION}"
