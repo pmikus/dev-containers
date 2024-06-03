@@ -34,7 +34,7 @@ RUN if [ "$CU_VERSION" = "cpu" ]; then \
     fi && \
     pip install --upgrade --no-cache-dir \
       "InvokeAI[xformers]" \
-      ${extra_packages} --index-url https://download.pytorch.org/whl/${CU_VERSION} && \
+      ${extra_packages} --use-pep517 --extra-index-url https://download.pytorch.org/whl/${CU_VERSION} && \
     pip install pypatchmatch
 
 # Start Scripts
