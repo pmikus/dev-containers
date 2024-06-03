@@ -30,27 +30,14 @@ RUN python3 -m venv /workspace/venv && \
 RUN if [ "$CU_VERSION" = "cpu" ]; then \
         extra_packages=""; \
     else \
-        extra_packages="xformers==${XFORMERS_VERSION}"; \
+        extra_packages=""; \
     fi && \
     pip install --upgrade --no-cache-dir \
-      torch==${TORCH_VERSION} \
-      torchvision \
-      torchaudio \
-      ${extra_packages} --index-url https://download.pytorch.org/whl/${CU_VERSION}
-
-# Install ComfyUI and ComfyUI Manager
-RUN git clone https://github.com/comfyanonymous/ComfyUI.git && \
-    cd ComfyUI && \
-    pip install -r requirements.txt && \
-    git clone https://github.com/ltdrdata/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager && \
-    cd custom_nodes/ComfyUI-Manager && \
-    pip install -r requirements.txt
-
-# Create necessary directories and copy necessary files
-RUN mkdir -p /root/.cache/huggingface && \
-    mkdir -p /comfy-models
+      "InvokeAI[xformers]" \
+      ${extra_packages} --index-url https://download.pytorch.org/whl/${CU_VERSION} && \
+    pip install pypatchmatch
 
 # Start Scripts
-COPY pre_start.sh /pre_start.sh
+COPY pre_start.sh /pre_start
 
-CMD [ "/start.sh" ]
+CMD ["/start.sh"]
