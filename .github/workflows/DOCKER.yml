@@ -23,7 +23,7 @@ jobs:
       matrix:
         image:
           - "ai-base"
-          - "stable-diffusion-webui"
+          - "stable-diffusion-comfyui"
           #- "invokeai"
     steps:
       - name: Delete huge unnecessary tools folder

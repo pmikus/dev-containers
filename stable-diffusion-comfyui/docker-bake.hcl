@@ -1,5 +1,5 @@
 variable "IMAGE_REPOSITORY" {
-    default = "pmikus/stable-diffusion-webui"
+    default = "pmikus/stable-diffusion-comfyui"
 }
 
 variable "RELEASE" {
@@ -23,7 +23,7 @@ variable "XFORMERS_VERSION" {
 }
 
 group "default" {
-    targets = ["cpu"]
+    targets = ["cpu", "12-4-1"]
 }
 
 target "cpu" {
@@ -35,10 +35,6 @@ target "cpu" {
         CU_VERSION = ""
         TORCH_VERSION = "${TORCH_VERSION}"
         XFORMERS_VERSION = "${XFORMERS_VERSION}"
-        FORGE_COMMIT = "29be1da7cf2b5dccfc70fbdd33eb35c56a31ffb7"
-        CIVITAI_DOWNLOADER_VERSION = "2.1.0"
-        VENV_PATH = "/workspace/venv/stable-diffusion-webui-forge"
-        WEBUI_VERSION = "v1.8.0"
     }
 }
 
@@ -51,9 +47,5 @@ target "12-4-1" {
         CU_VERSION = "${CU_VERSION}"
         TORCH_VERSION = "${TORCH_VERSION}+${CU_VERSION}"
         XFORMERS_VERSION = "${XFORMERS_VERSION}"
-        FORGE_COMMIT = "29be1da7cf2b5dccfc70fbdd33eb35c56a31ffb7"
-        CIVITAI_DOWNLOADER_VERSION = "2.1.0"
-        VENV_PATH = "/workspace/venv/stable-diffusion-webui-forge"
-        WEBUI_VERSION = "v1.8.0"
     }
 }
