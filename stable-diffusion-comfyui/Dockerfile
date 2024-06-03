@@ -25,9 +25,7 @@ RUN python3 -m venv /workspace/venv && \
       jupyterlab \
       ipywidgets \
       jupyter-archive \
-      jupyter_contrib_nbextensions \
-      triton \
-      gdown
+      jupyter_contrib_nbextensions
 
 RUN pip install --upgrade --no-cache-dir \
       torch==${TORCH_VERSION} \
