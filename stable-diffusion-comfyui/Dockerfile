@@ -45,16 +45,13 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git && \
     pip install -r requirements.txt
 
 # Install Controlnet Preprocessor nodes
-RUN cd ComfyUI/custom_nodes && git clone https://github.com/Fannovel16/comfy_controlnet_preprocessors && \
-    cd comfy_controlnet_preprocessors && \
-    python install.py --no_download_ckpts
-RUN cd ComfyUI/custom_nodes && git clone https://github.com/Fannovel16/comfyui_controlnet_aux && \
+RUN cd ComfyUI/custom_nodes && git clone https://github.com/Fannovel16/comfyui_controlnet_aux.git && \
     cd comfyui_controlnet_aux && \
     pip install -r requirements.txt
-RUN cd ComfyUI/custom_nodes && git clone https://github.com/Stability-AI/stability-ComfyUI-nodes && \
+RUN cd ComfyUI/custom_nodes && git clone https://github.com/Stability-AI/stability-ComfyUI-nodes.git && \
     cd stability-ComfyUI-nodes && \
     pip install -r requirements.txt
-RUN cd ComfyUI/custom_nodes && git clone https://github.com/EllangoK/ComfyUI-post-processing-nodes
+RUN cd ComfyUI/custom_nodes && git clone https://github.com/EllangoK/ComfyUI-post-processing-nodes.git
 
 # Install ComfyUI Manager
 RUN cd ComfyUI/custom_nodes && git clone https://github.com/ltdrdata/ComfyUI-Manager.git && \
