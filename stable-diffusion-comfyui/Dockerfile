@@ -39,12 +39,26 @@ RUN if [ "$CU_VERSION" = "cpu" ]; then \
       ${extra_packages} \
       --extra-index-url https://download.pytorch.org/whl/${CU_VERSION}
 
-# Install ComfyUI and ComfyUI Manager
+# Install ComfyUI
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git && \
     cd ComfyUI && \
-    pip install -r requirements.txt && \
-    git clone https://github.com/ltdrdata/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager && \
-    cd custom_nodes/ComfyUI-Manager && \
+    pip install -r requirements.txt
+
+# Install Controlnet Preprocessor nodes
+RUN cd custom_nodes && git clone https://github.com/Fannovel16/comfy_controlnet_preprocessors && \
+    cd comfy_controlnet_preprocessors && \
+    python install.py --no_download_ckpts
+RUN cd custom_nodes && git clone https://github.com/Fannovel16/comfyui_controlnet_aux && \
+    cd comfyui_controlnet_aux && \
+    pip install -r requirements.txt
+RUN cd custom_nodes && git clone https://github.com/Stability-AI/stability-ComfyUI-nodes && \
+    cd stability-ComfyUI-nodes && \
+    pip install -r requirements.txt
+RUN cd custom_nodes && git clone https://github.com/EllangoK/ComfyUI-post-processing-nodes
+
+# Install ComfyUI Manager
+RUN cd custom_nodes && git clone https://github.com/ltdrdata/ComfyUI-Manager.git && \
+    cd ComfyUI-Manager && \
     pip install -r requirements.txt
 
 # Start Scripts

@@ -9,9 +9,9 @@ x-comfyui: &comfyui
       args:
         RELEASE: "0.0.1"
         BASE_IMAGE: "pmikus/ai-base:0.0.1-cuda12.4.1"
-        PYTHON_VERSION: ${PYTHON_VERSION:-3.10}
-        PYTORCH_VERSION: ${PYTORCH_VERSION:-2.2.2}
-        COMFYUI_SHA: ${COMFYUI_SHA:-}
+        CU_VERSION: "cu118"
+        TORCH_VERSION: "2.3.0cu118"
+        XFORMERS_VERSION: "0.0.26.post1"
 
     # Create a .env file in the same directory as this docker-compose.yml file
     # and populate it with environment variables. See .env.sample
