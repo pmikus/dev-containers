@@ -45,9 +45,6 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git && \
     pip install -r requirements.txt
 
 # Install Controlnet Preprocessor nodes
-RUN cd ComfyUI/custom_nodes && git clone https://github.com/Fannovel16/comfyui_controlnet_aux.git && \
-    cd comfyui_controlnet_aux && \
-    pip install -r requirements.txt
 RUN cd ComfyUI/custom_nodes && git clone https://github.com/Stability-AI/stability-ComfyUI-nodes.git && \
     cd stability-ComfyUI-nodes && \
     pip install -r requirements.txt
