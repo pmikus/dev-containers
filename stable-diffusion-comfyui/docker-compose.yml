@@ -1,5 +1,3 @@
-version: "3"
-
 x-comfyui: &comfyui
     image: "pmikus/stable-diffusion:comfy-ui-0.0.1-cuda12.4.1"
     platform: "linux/amd64"
@@ -30,9 +28,10 @@ x-comfyui: &comfyui
       - "${SSH_PORT_HOST:-2222}:22"
       # ComfyUI web interface
       - "${COMFYUI_PORT_HOST:-3000}:${COMFYUI_PORT_HOST:-3000}"
+      - "${COMFYUI_NGINX_PORT_HOST:-3001}:${COMFYUI_NGINX_PORT_HOST:-3001}"
     volumes:
       - type: "bind"
-        source: "${HOST_COMFYUI_ROOT:-${COMFYUI_ROOT:-/workspace/ai/comfy-models}}"
+        source: "${HOST_COMFYUI_ROOT:-${COMFYUI_ROOT:-/home/debian/workspace/ai/sd-models}}"
         target: "${CONTAINER_COMFYUI_ROOT:-/comfy-models}"
         bind:
           create_host_path: true
@@ -42,6 +41,8 @@ x-comfyui: &comfyui
 services:
   comfyui-nvidia:
     <<: *comfyui
+    privileged: true
+    dns: 1.1.1.1
     deploy:
       resources:
         reservations:
