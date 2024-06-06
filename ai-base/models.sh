@@ -21,11 +21,11 @@ mkdir -p "${UPSCALE_MODELS_DIR}"
 mkdir -p "${GLIGEN_DIR}"
 
 # SDXL
-#wget -c https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors -P "${CHECKPOINTS_DIR}"
-#wget -c https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors -P "${CHECKPOINTS_DIR}"
+wget -c https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors -P "${CHECKPOINTS_DIR}"
+wget -c https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors -P "${CHECKPOINTS_DIR}"
 wget -c https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0_0.9vae.safetensors -P "${CHECKPOINTS_DIR}"
 # SD1.5
-#wget -c https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt -P "${CHECKPOINTS_DIR}"
+wget -c https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt -P "${CHECKPOINTS_DIR}"
 wget -c https://huggingface.co/stabilityai/stable-diffusion-2-1-base/resolve/main/v2-1_512-ema-pruned.safetensors -P "${CHECKPOINTS_DIR}"
 wget -c https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.safetensors -P "${CHECKPOINTS_DIR}"
 # Some SD1.5 anime style

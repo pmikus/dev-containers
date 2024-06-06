@@ -23,10 +23,10 @@ variable "XFORMERS_VERSION" {
 }
 
 group "default" {
-    targets = ["12-4-1"]
+    targets = ["cuda"]
 }
 
-target "12-4-1" {
+target "cuda" {
     dockerfile = "Dockerfile"
     tags = ["${IMAGE_REPOSITORY}:comfy-ui-${RELEASE}-${CUDA_VERSION}"]
     platforms = ["linux/amd64"]

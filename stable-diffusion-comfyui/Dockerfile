@@ -50,6 +50,9 @@ RUN cd ComfyUI/custom_nodes && git clone https://github.com/Stability-AI/stabili
     pip install -r requirements.txt
 RUN cd ComfyUI/custom_nodes && git clone https://github.com/EllangoK/ComfyUI-post-processing-nodes.git
 
+# Install ComfyUI custom nodes kit
+RUN cd ComfyUI/custom_nodes && git clone https://github.com/Smirnov75/ComfyUI-mxToolkit
+
 # Install ComfyUI Manager
 RUN cd ComfyUI/custom_nodes && git clone https://github.com/ltdrdata/ComfyUI-Manager.git && \
     cd ComfyUI-Manager && \

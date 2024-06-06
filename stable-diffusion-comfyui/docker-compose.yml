@@ -27,7 +27,6 @@ x-comfyui: &comfyui
       # SSH available on host machine port 2222 to avoid conflict. Change to suit
       - "${SSH_PORT_HOST:-2222}:22"
       # ComfyUI web interface
-      - "${COMFYUI_PORT_HOST:-3000}:${COMFYUI_PORT_HOST:-3000}"
       - "${COMFYUI_NGINX_PORT_HOST:-3001}:${COMFYUI_NGINX_PORT_HOST:-3001}"
     volumes:
       - type: "bind"
@@ -51,7 +50,7 @@ services:
               count: 1
               capabilities: ["gpu"]
 
-  #  comfyui-cpu:
-  #  <<: *comfyui
-  #  profiles:
-  #   - "cpu"
+    comfyui-cpu:
+    <<: *comfyui
+    profiles:
+     - "cpu"
