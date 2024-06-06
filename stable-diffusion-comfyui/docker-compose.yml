@@ -31,8 +31,8 @@ x-comfyui: &comfyui
       - "${COMFYUI_NGINX_PORT_HOST:-3001}:${COMFYUI_NGINX_PORT_HOST:-3001}"
     volumes:
       - type: "bind"
-        source: "${HOST_COMFYUI_ROOT:-${COMFYUI_ROOT:-/home/debian/workspace/ai/sd-models}}"
-        target: "${CONTAINER_COMFYUI_ROOT:-/comfy-models}"
+        source: "${HOST_COMFYUI_ROOT:-${COMFYUI_ROOT:-/glacier/ai/models/}}"
+        target: "${CONTAINER_COMFYUI_ROOT:-/workspace/ComfyUI/models/}"
         bind:
           create_host_path: true
     tty: true
