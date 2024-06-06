@@ -46,7 +46,6 @@ RUN apt-get update --yes && \
     jq \
     libgl1 \
     lsof \
-    nginx \
 
     # Required for SSH access
     openssh-server \
@@ -129,9 +128,6 @@ RUN python${PYTHON_VERSION} -m pip install virtualenv
 
 # Install pip drop-in replacement uv (https://github.com/astral-sh/uv)
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# NGINX Proxy
-COPY nginx.conf /etc/nginx/nginx.conf
 
 # Start Scripts
 COPY start.sh /
