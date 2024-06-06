@@ -61,7 +61,7 @@ jobs:
       # (don't push on PR, load instead)
       - name: "Build and push Docker image"
         id: "docker_build"
-        uses: "docker/bake-action@v5"
+        uses: "docker/bake-action@v4"
         if: github.event_name == 'pull_request'
         with:
           builder: "${{ steps.docker_buildx.outputs.name }}"
