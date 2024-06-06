@@ -50,7 +50,7 @@ services:
               count: 1
               capabilities: ["gpu"]
 
-    comfyui-cpu:
-    <<: *comfyui
-    profiles:
-     - "cpu"
+#    comfyui-cpu:
+#    <<: *comfyui
+#    profiles:
+#     - "cpu"

@@ -46,9 +46,6 @@ RUN apt-get update --yes && \
     jq \
     libgl1 \
     lsof \
-    vim \
-    nano \
-    tmux \
     nginx \
 
     # Required for SSH access
