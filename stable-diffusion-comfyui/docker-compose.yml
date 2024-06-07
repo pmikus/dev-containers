@@ -51,7 +51,8 @@ services:
               capabilities: ["gpu"]
 
   nginx:
-    image: nginx
+    image: "nginx"
+    restart: "always"
     volumes:
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
     ports:
