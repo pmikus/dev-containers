@@ -54,11 +54,14 @@ services:
     image: "nginx"
     restart: "always"
     volumes:
-      - "./nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "./default.conf.template:/etc/nginx/templates/default.conf.template:ro"
     ports:
       - "3001:3001"
     depends_on:
       - "comfyui-nvidia"
+    environment:
+      - COMFYUI_HOST=comfyui-nvidia
+      - NGINX_PORT=3001
 
 #    comfyui-cpu:
 #    <<: *comfyui
