@@ -1,5 +1,5 @@
 x-comfyui: &comfyui
-    image: "pmikus/stable-diffusion:comfy-ui-0.0.1-cuda12.4.1"
+  image: "pmikus/stable-diffusion-comfy-ui:latest"
     platform: "linux/amd64"
     build:
       context: .

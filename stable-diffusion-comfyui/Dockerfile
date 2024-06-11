@@ -65,6 +65,11 @@ RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git && \
 # Install UltimateSDUpscale
 RUN git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive
 
+# Install Efficiency nodes
+RUN git clone https://github.com/jags111/efficiency-nodes-comfyui && \
+    cd efficiency-nodes-comfyui && \
+    pip install -r requirements.txt
+
 # Start Scripts
 COPY pre_start.sh /pre_start.sh
 
