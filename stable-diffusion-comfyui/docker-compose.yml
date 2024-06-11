@@ -32,6 +32,7 @@ x-comfyui: &comfyui
       - type: "bind"
         source: "${HOST_COMFYUI_ROOT:-${COMFYUI_ROOT:-/glacier/ai/models/}}"
         target: "${CONTAINER_COMFYUI_ROOT:-/workspace/ComfyUI/models/}"
+        read_only: true
         bind:
           create_host_path: true
     tty: true

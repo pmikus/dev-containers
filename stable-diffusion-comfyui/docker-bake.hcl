@@ -23,13 +23,19 @@ variable "XFORMERS_VERSION" {
 }
 
 group "default" {
-    targets = ["cuda"]
+    targets = [
+      "cuda"
+    ]
 }
 
 target "cuda" {
     dockerfile = "Dockerfile"
-    tags = ["${IMAGE_REPOSITORY}:comfy-ui-${RELEASE}-${CUDA_VERSION}"]
-    platforms = ["linux/amd64"]
+    tags = [
+      "${IMAGE_REPOSITORY}:comfy-ui-${RELEASE}-${CUDA_VERSION}"
+    ]
+    platforms = [
+      "linux/amd64"
+    ]
     args = {
         RELEASE = "${RELEASE}"
         BASE_IMAGE = "pmikus/ai-base:${RELEASE}-${CUDA_VERSION}"

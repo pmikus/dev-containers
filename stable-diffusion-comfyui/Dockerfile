@@ -62,6 +62,9 @@ RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git && \
     cd ComfyUI-Manager && \
     pip install -r requirements.txt
 
+# Install UltimateSDUpscale
+RUN git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive
+
 # Start Scripts
 COPY pre_start.sh /pre_start.sh
 
