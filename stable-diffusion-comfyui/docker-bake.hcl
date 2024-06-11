@@ -1,5 +1,5 @@
 variable "IMAGE_REPOSITORY" {
-    default = "pmikus/stable-diffusion"
+    default = "pmikus/stable-diffusion-comfy-ui"
 }
 
 variable "RELEASE" {
@@ -31,7 +31,8 @@ group "default" {
 target "cuda" {
     dockerfile = "Dockerfile"
     tags = [
-      "${IMAGE_REPOSITORY}:comfy-ui-${RELEASE}-${CUDA_VERSION}"
+      "${IMAGE_REPOSITORY}:latest,
+      "${IMAGE_REPOSITORY}:${RELEASE}-${CUDA_VERSION}"
     ]
     platforms = [
       "linux/amd64"
