@@ -31,7 +31,7 @@ group "default" {
 target "cuda" {
     dockerfile = "Dockerfile"
     tags = [
-      "${IMAGE_REPOSITORY}:latest,
+      "${IMAGE_REPOSITORY}:latest",
       "${IMAGE_REPOSITORY}:${RELEASE}-${CUDA_VERSION}"
     ]
     platforms = [
