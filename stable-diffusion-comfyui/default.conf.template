@@ -50,6 +50,11 @@ http {
             proxy_intercept_errors on;
             error_page 502 =200 @502;
         }
+
+        location /health-check {
+            add_header Content-Type text/plain;
+            return 200 "success";
+        }
     }
 
     # Oobabooga
