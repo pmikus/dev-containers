@@ -70,7 +70,6 @@ RUN git clone https://github.com/jags111/efficiency-nodes-comfyui && \
     cd efficiency-nodes-comfyui && \
     pip install -r requirements.txt
 
-# Start Scripts
-COPY pre_start.sh /pre_start.sh
+WORKDIR /workspace/ComfyUI
 
-CMD [ "/start.sh" ]
+CMD [ "python3", "main.py", "--listen", "0.0.0.0", "--output-directory", "/volume/}" ]

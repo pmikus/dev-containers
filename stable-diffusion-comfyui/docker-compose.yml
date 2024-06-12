@@ -5,8 +5,8 @@ x-comfyui: &comfyui
     context: .
     dockerfile: "Dockerfile"
     args:
-      RELEASE: "0.0.1"
-      BASE_IMAGE: "pmikus/ai-base:0.0.1-cuda12.4.1"
+      RELEASE: "local"
+      BASE_IMAGE: "pmikus/ai-base:local-cuda12.4.1"
       CU_VERSION: "cu118"
       TORCH_VERSION: "2.3.0cu118"
       XFORMERS_VERSION: "0.0.26.post1"
@@ -22,10 +22,7 @@ x-comfyui: &comfyui
     - "COMFYUI_PORT_HOST=${COMFYUI_PORT_HOST:-3000}"
     - "COMFYUI_METRICS_PORT=${COMFYUI_METRICS_PORT:-33000}"
     - "COMFYUI_URL=${COMFYUI_URL:-}"
-    - "SSH_PORT_HOST=${SSH_PORT_HOST:-2222}"
   ports:
-    # SSH available on host machine port 2222 to avoid conflict. Change to suit
-    - "${SSH_PORT_HOST:-2222}:22"
     # ComfyUI web interface
     - "${COMFYUI_PORT_HOST:-3000}:${COMFYUI_PORT_HOST:-8188}"
   volumes:
@@ -62,4 +59,5 @@ services:
       - "comfyui-nvidia"
     environment:
       - "COMFYUI_HOST=comfyui-nvidia"
+      - "COMFYUI_PORT=3000"
       - "NGINX_PORT=3001"
