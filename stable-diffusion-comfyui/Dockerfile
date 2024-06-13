@@ -18,7 +18,7 @@ ENV PATH="/root/.cargo/bin:$PATH"
 WORKDIR /workspace
 
 # Install necessary Python packages
-RUN uv /workspace/venv && \
+RUN uv venv && \
     pip install --upgrade --no-cache-dir pip && \
     pip install --upgrade setuptools && \
     pip install --upgrade wheel && \
