@@ -47,28 +47,31 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git && \
 
 WORKDIR /workspace/ComfyUI/custom_nodes/
 
-# Install Controlnet Preprocessor nodes
-RUN git clone https://github.com/Stability-AI/stability-ComfyUI-nodes.git && \
+# Install Custom nodes for ComfyUI
+RUN git clone https://github.com/Stability-AI/stability-ComfyUI-nodes && \
     cd stability-ComfyUI-nodes && \
     pip install -r requirements.txt
-RUN git clone https://github.com/EllangoK/ComfyUI-post-processing-nodes.git
 
-# Install ComfyUI custom nodes kit
-RUN git clone https://github.com/Smirnov75/ComfyUI-mxToolkit
+# Install ComfyUI-post-processing-nodes
+RUN git clone https://github.com/EllangoK/ComfyUI-post-processing-nodes
+
+# Install ComfyUI's ControlNet Auxiliary Preprocessors
 RUN git clone https://github.com/Fannovel16/comfyui_controlnet_aux && \
     cd comfyui_controlnet_aux && \
     pip install -r requirements.txt
+
+# Install ComfyUI Noise
 RUN git clone https://github.com/BlenderNeko/ComfyUI_Noise
 
 # Install ComfyUI Manager
-RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git && \
+RUN git clone https://github.com/ltdrdata/ComfyUI-Manager && \
     cd ComfyUI-Manager && \
     pip install -r requirements.txt
 
 # Install UltimateSDUpscale
 RUN git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive
 
-# Install Efficiency nodes
+# Install Efficiency Nodes
 RUN git clone https://github.com/jags111/efficiency-nodes-comfyui && \
     cd efficiency-nodes-comfyui && \
     pip install -r requirements.txt
