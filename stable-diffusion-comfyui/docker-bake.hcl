@@ -11,7 +11,7 @@ variable "CU_VERSION" {
 }
 
 variable "CUDA_VERSION" {
-    default = "cuda12.4.1"
+    default = "cuda12.6.1"
 }
 
 variable "TORCH_VERSION" {
