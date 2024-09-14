@@ -24,8 +24,8 @@ target "cpu" {
     ]
     args = {
         BASE_RELEASE_VERSION = "${RELEASE}"
-        BASE_IMAGE = "ubuntu:22.04"
-        PYTHON_VERSION = "3.10"
+        BASE_IMAGE = "ubuntu:24.04"
+        PYTHON_VERSION = "3.12"
     }
 }
 
