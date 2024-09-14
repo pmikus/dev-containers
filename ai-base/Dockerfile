@@ -102,6 +102,7 @@ RUN apt-get update --yes && \
     zstd && \
 
     # Add the Python PPA and install Python versions
+    add-apt-repository ppa:deadsnakes/ppa && \
     apt install --yes --no-install-recommends \
     python${PYTHON_VERSION}-dev \
     python${PYTHON_VERSION}-venv \
