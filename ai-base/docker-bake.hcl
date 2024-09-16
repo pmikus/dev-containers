@@ -56,7 +56,7 @@ target "cuda-12-6-1" {
     ]
     args = {
         BASE_RELEASE_VERSION = "${RELEASE}"
-        BASE_IMAGE = "nvidia/cuda:12.6.1-devel-ubuntu24.04"
-        PYTHON_VERSION = "3.13"
+        BASE_IMAGE = "nvidia/cuda:12.6.1-devel-ubuntu22.04"
+        PYTHON_VERSION = "3.10"
     }
 }
