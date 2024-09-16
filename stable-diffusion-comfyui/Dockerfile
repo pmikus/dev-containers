@@ -52,9 +52,6 @@ RUN git clone https://github.com/Stability-AI/stability-ComfyUI-nodes && \
     cd stability-ComfyUI-nodes && \
     pip install -r requirements.txt
 
-# Install ComfyUI-post-processing-nodes
-RUN git clone https://github.com/EllangoK/ComfyUI-post-processing-nodes
-
 # Install ComfyUI's ControlNet Auxiliary Preprocessors
 RUN git clone https://github.com/Fannovel16/comfyui_controlnet_aux && \
     cd comfyui_controlnet_aux && \
@@ -72,9 +69,9 @@ RUN git clone https://github.com/ltdrdata/ComfyUI-Manager && \
 RUN git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive
 
 # Install Efficiency Nodes
-RUN git clone https://github.com/jags111/efficiency-nodes-comfyui && \
-    cd efficiency-nodes-comfyui && \
-    pip install -r requirements.txt
+#RUN git clone https://github.com/jags111/efficiency-nodes-comfyui && \
+#    cd efficiency-nodes-comfyui && \
+#    pip install -r requirements.txt
 
 WORKDIR /workspace/ComfyUI
 
