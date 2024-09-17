@@ -10,6 +10,7 @@ LORAS_DIR="${BASE_DIR}/models/loras/"
 CLIP_VISION_DIR="${BASE_DIR}/models/clip_vision/"
 UPSCALE_MODELS_DIR="${BASE_DIR}/models/upscale_models/"
 GLIGEN_DIR="${BASE_DIR}/models/gligen/"
+T5_DIR="${BASE_DIR}/models/t5/"
 
 mkdir -p "${CHECKPOINTS_DIR}"
 mkdir -p "${VAE_DIR}"
@@ -19,6 +20,7 @@ mkdir -p "${LORAS_DIR}"
 mkdir -p "${CLIP_VISION_DIR}"
 mkdir -p "${UPSCALE_MODELS_DIR}"
 mkdir -p "${GLIGEN_DIR}"
+mkdir -p "${T5_DIR}"
 
 # ---
 # MODELS
@@ -47,8 +49,8 @@ wget -c "https://civitai.com/api/download/models/456751?type=Model&format=SafeTe
 # PerfectDeliberate (https://civitai.com/models/24350/perfectdeliberate)
 wget -c "https://civitai.com/api/download/models/253055?type=Model&format=SafeTensor&size=pruned" -O "${CHECKPOINTS_DIR}perfectdeliberate_v5.safetensors"
 # Pixart a XL 2 1024x1024 (https://civitai.com/models/172058/pixart-a-xl-2-1024x1024)
-wget -c "https://civitai.com/api/download/models/193256?type=Model&format=PickleTensor&size=full" -O "${CHECKPOINTS_DIR}pixartAXL21024x1024_v10.pt" 
 wget -c "https://huggingface.co/PixArt-alpha/PixArt-alpha/blob/main/PixArt-XL-2-1024-MS.pth" -P "${CHECKPOINTS_DIR}"
+
 # ---
 # VAE
 # SDXL VAE (https://civitai.com/models/296576/sdxl-vae)
@@ -56,6 +58,7 @@ wget -c "https://civitai.com/api/download/models/333245?type=Model&format=SafeTe
 wget -c https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors -P "${VAE_DIR}"
 wget -c https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/VAEs/orangemix.vae.pt -P "${VAE_DIR}"
 wget -c https://huggingface.co/hakurei/waifu-diffusion-v1-4/resolve/main/vae/kl-f8-anime2.ckpt -P "${VAE_DIR}"
+wget -c https://huggingface.co/PixArt-alpha/PixArt-alpha/tree/main/sd-vae-ft-ema -P "${VAE_DIR}"
 
 # ---
 # Loras
@@ -115,3 +118,7 @@ wget -c "https://civitai.com/api/download/models/125843?type=Model&format=Pickle
 wget -c https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth -P "${UPSCALE_MODELS_DIR}"
 wget -c https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x2.pth -P "${UPSCALE_MODELS_DIR}"
 wget -c https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth -P "${UPSCALE_MODELS_DIR}"
+
+# ---
+# T5
+wget -c "https://huggingface.co/PixArt-alpha/PixArt-alpha/tree/main/t5-v1_1-xxl" -P "${T5_DIR}"

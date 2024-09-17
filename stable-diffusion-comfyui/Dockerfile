@@ -73,6 +73,11 @@ RUN git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive
 #    cd efficiency-nodes-comfyui && \
 #    pip install -r requirements.txt
 
+# Install PixArt Nodes
+RUN git clone https://github.com/city96/ComfyUI_ExtraModels && \
+    cd ComfyUI_ExtraModels && \
+    pip install -r requirements.txt
+
 WORKDIR /workspace/ComfyUI
 
 CMD [ "python3", "main.py", "--listen", "0.0.0.0", "--output-directory", "/volume/" ]
