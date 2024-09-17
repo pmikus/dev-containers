@@ -22,6 +22,15 @@ mkdir -p "${UPSCALE_MODELS_DIR}"
 mkdir -p "${GLIGEN_DIR}"
 mkdir -p "${T5_DIR}"
 
+# FLUX.1
+# MODELS
+wget -c "https://huggingface.co/lllyasviel/flux1-dev-bnb-nf4/blob/main/flux1-dev-bnb-nf4-v2.safetensors" -P "${CHECKPOINTS_DIR}"
+# VAE
+wget -c "https://huggingface.co/black-forest-labs/FLUX.1-schnell/blob/main/vae/diffusion_pytorch_model.safetensors" -P "${VAE_DIR}"
+# T5
+wget -c "https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/t5xxl_fp8_e4m3fn.safetensors" -P "${T5_DIR}"
+
+
 # ---
 # MODELS
 # SDXL

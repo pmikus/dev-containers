@@ -69,17 +69,21 @@ RUN git clone https://github.com/ltdrdata/ComfyUI-Manager && \
 RUN git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive
 
 # Install Efficiency Nodes
-#RUN git clone https://github.com/jags111/efficiency-nodes-comfyui && \
-#    cd efficiency-nodes-comfyui && \
-#    pip install -r requirements.txt
+RUN git clone https://github.com/jags111/efficiency-nodes-comfyui && \
+    cd efficiency-nodes-comfyui && \
+    pip install -r requirements.txt
 
-# Install BNB Nodes
+# Install BNB Nodes & GGUF
 RUN git clone https://github.com/comfyanonymous/ComfyUI_bitsandbytes_NF4 && \
     cd ComfyUI_bitsandbytes_NF4 && \
     pip install -r requirements.txt
 
 RUN git clone https://github.com/DenkingOfficial/ComfyUI_UNet_bitsandbytes_NF4 && \
     cd ComfyUI_UNet_bitsandbytes_NF4 && \
+    pip install -r requirements.txt
+
+RUN git clone https://github.com/city96/ComfyUI-GGUF && \
+    cd ComfyUI-GGUF && \
     pip install -r requirements.txt
 
 WORKDIR /workspace/ComfyUI

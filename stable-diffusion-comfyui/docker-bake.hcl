@@ -15,11 +15,11 @@ variable "CUDA_VERSION" {
 }
 
 variable "TORCH_VERSION" {
-    default = "2.3.0"
+    default = "2.4.1"
 }
 
 variable "XFORMERS_VERSION" {
-    default = "0.0.26.post1"
+    default = "0.0.28.post1"
 }
 
 group "default" {
