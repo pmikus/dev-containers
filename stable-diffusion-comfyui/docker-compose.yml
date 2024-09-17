@@ -15,7 +15,6 @@ x-comfyui: &comfyui
   # and populate it with environment variables. See .env.sample
   env_file:
     - ".env"
-
     # variables without a default will automatically inherit from the host environment
   environment:
     - "COMFYUI_FLAGS=${COMFYUI_FLAGS:-}"

@@ -73,9 +73,13 @@ RUN git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive
 #    cd efficiency-nodes-comfyui && \
 #    pip install -r requirements.txt
 
-# Install PixArt Nodes
-RUN git clone https://github.com/city96/ComfyUI_ExtraModels && \
-    cd ComfyUI_ExtraModels && \
+# Install BNB Nodes
+RUN git clone https://github.com/comfyanonymous/ComfyUI_bitsandbytes_NF4 && \
+    cd ComfyUI_bitsandbytes_NF4 && \
+    pip install -r requirements.txt
+
+RUN git clone https://github.com/DenkingOfficial/ComfyUI_UNet_bitsandbytes_NF4 && \
+    cd ComfyUI_UNet_bitsandbytes_NF4 && \
     pip install -r requirements.txt
 
 WORKDIR /workspace/ComfyUI

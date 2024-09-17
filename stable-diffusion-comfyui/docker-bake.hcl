@@ -7,15 +7,15 @@ variable "RELEASE" {
 }
 
 variable "CU_VERSION" {
-    default = "cu124"
+    default = "cu118"
 }
 
 variable "CUDA_VERSION" {
-    default = "cuda12.6.1"
+    default = "cuda12.4.1"
 }
 
 variable "TORCH_VERSION" {
-    default = "2.4.1"
+    default = "2.3.0"
 }
 
 variable "XFORMERS_VERSION" {
