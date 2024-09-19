@@ -1,6 +1,24 @@
 http {
     client_max_body_size 1024M;
 
+    server {
+        listen 80;
+        server_tokens off;
+
+        location = /health-check {
+            types {}
+            add_header Content-Type text/plain;
+            return 200 "success";
+        }
+
+        location / {
+            alias /mnt/data/;
+            expires -1;
+            autoindex on;
+            default_type text/plain;
+        }
+    }
+
     # Comfy UI
     server {
         listen ${NGINX_PORT};
