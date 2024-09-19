@@ -7,7 +7,7 @@ variable "RELEASE" {
 }
 
 variable "CU_VERSION" {
-    default = "cu118"
+    default = "cu124"
 }
 
 variable "CUDA_VERSION" {
