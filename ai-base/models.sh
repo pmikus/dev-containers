@@ -6,6 +6,7 @@ CHECKPOINTS_DIR="${BASE_DIR}/models/checkpoints/"
 VAE_DIR="${BASE_DIR}/models/vae/"
 CONTROLNET_DIR="${BASE_DIR}/models/controlnet/"
 STYLE_MODELS_DIR="${BASE_DIR}/models/style_models/"
+CLIP_DIR="${BASE_DIR}/models/clip/"
 LORAS_DIR="${BASE_DIR}/models/loras/"
 CLIP_VISION_DIR="${BASE_DIR}/models/clip_vision/"
 UPSCALE_MODELS_DIR="${BASE_DIR}/models/upscale_models/"
@@ -16,6 +17,7 @@ mkdir -p "${CHECKPOINTS_DIR}"
 mkdir -p "${VAE_DIR}"
 mkdir -p "${CONTROLNET_DIR}"
 mkdir -p "${STYLE_MODELS_DIR}"
+mkdir -p "${CLIP_DIR}"
 mkdir -p "${LORAS_DIR}"
 mkdir -p "${CLIP_VISION_DIR}"
 mkdir -p "${UPSCALE_MODELS_DIR}"
@@ -25,10 +27,14 @@ mkdir -p "${T5_DIR}"
 # FLUX.1
 # MODELS
 wget -c "https://huggingface.co/lllyasviel/flux1-dev-bnb-nf4/blob/main/flux1-dev-bnb-nf4-v2.safetensors" -P "${CHECKPOINTS_DIR}"
+wget -c "https://huggingface.co/black-forest-labs/FLUX.1-dev/blob/main/flux1-dev.safetensors" -P "${CONTROLNET_DIR}"
 # VAE
 wget -c "https://huggingface.co/black-forest-labs/FLUX.1-schnell/blob/main/vae/diffusion_pytorch_model.safetensors" -P "${VAE_DIR}"
+wget -c "https://huggingface.co/black-forest-labs/FLUX.1-dev/blob/main/ae.safetensors" -P "${VAE_DIR}"
+# CLIP
+wget -c "https://huggingface.co/stabilityai/stable-diffusion-3-medium/blob/main/text_encoders/clip_l.safetensors" -P "${CLIP_DIR}"
 # T5
-wget -c "https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/t5xxl_fp8_e4m3fn.safetensors" -P "${T5_DIR}"
+wget -c "https://huggingface.co/stabilityai/stable-diffusion-3-medium/blob/main/text_encoders/t5xxl_fp8_e4m3fn.safetensors" -P "${T5_DIR}"
 
 
 # ---
