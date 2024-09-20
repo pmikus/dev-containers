@@ -18,21 +18,15 @@ ENV PATH="/root/.cargo/bin:$PATH"
 WORKDIR /workspace
 
 # Install necessary Python packages
-RUN uv venv && \
-    pip install --upgrade --no-cache-dir pip && \
-    pip install --upgrade setuptools && \
-    pip install --upgrade wheel && \
-    pip install --upgrade --no-cache-dir \
-      jupyterlab \
-      ipywidgets \
-      jupyter-archive \
-      jupyter_contrib_nbextensions
-
 RUN if [ "$CU_VERSION" = "cpu" ]; then \
         extra_packages=""; \
     else \
         extra_packages="xformers==${XFORMERS_VERSION}"; \
     fi && \
+    uv venv && \
+    pip install --upgrade --no-cache-dir pip && \
+    pip install --upgrade setuptools && \
+    pip install --upgrade wheel && \
     pip install --upgrade --no-cache-dir \
       torch==${TORCH_VERSION} \
       torchvision \
@@ -47,6 +41,11 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git && \
 
 WORKDIR /workspace/ComfyUI/custom_nodes/
 
+# Install ComfyUI Manager
+RUN git clone https://github.com/ltdrdata/ComfyUI-Manager && \
+    cd ComfyUI-Manager && \
+    pip install -r requirements.txt
+
 # Install Custom nodes for ComfyUI
 RUN git clone https://github.com/Stability-AI/stability-ComfyUI-nodes && \
     cd stability-ComfyUI-nodes && \
@@ -59,11 +58,6 @@ RUN git clone https://github.com/Fannovel16/comfyui_controlnet_aux && \
 
 # Install ComfyUI Noise
 RUN git clone https://github.com/BlenderNeko/ComfyUI_Noise
-
-# Install ComfyUI Manager
-RUN git clone https://github.com/ltdrdata/ComfyUI-Manager && \
-    cd ComfyUI-Manager && \
-    pip install -r requirements.txt
 
 # Install UltimateSDUpscale
 RUN git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive

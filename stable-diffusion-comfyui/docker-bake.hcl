@@ -35,7 +35,8 @@ target "cuda" {
       "${IMAGE_REPOSITORY}:${RELEASE}-${CUDA_VERSION}"
     ]
     platforms = [
-      "linux/amd64"
+      "linux/amd64",
+      "linux/arm64"
     ]
     args = {
         RELEASE = "${RELEASE}"
