@@ -1,52 +1,43 @@
-x-comfyui: &comfyui
-  image: "pmikus/stable-diffusion-comfy-ui:latest"
-  platform: "linux/amd64"
-  build:
-    context: .
-    dockerfile: "Dockerfile"
-    args:
-      RELEASE: "local"
-      BASE_IMAGE: "pmikus/ai-base:local-cuda12.4.1"
-      CU_VERSION: "cu118"
-      TORCH_VERSION: "2.4.1cu124"
-      XFORMERS_VERSION: "0.0.28.post1"
-
-  # Create a .env file in the same directory as this docker-compose.yml file
-  # and populate it with environment variables. See .env.sample
-  env_file:
-    - ".env"
-    # variables without a default will automatically inherit from the host environment
-  environment:
-    - "COMFYUI_FLAGS=${COMFYUI_FLAGS:-}"
-    - "COMFYUI_PORT_HOST=${COMFYUI_PORT_HOST:-3000}"
-    - "COMFYUI_METRICS_PORT=${COMFYUI_METRICS_PORT:-33000}"
-    - "COMFYUI_URL=${COMFYUI_URL:-}"
-  ports:
-    # ComfyUI web interface
-    - "${COMFYUI_PORT_HOST:-3000}:${COMFYUI_PORT_HOST:-8188}"
-  volumes:
-    - type: "bind"
-      source: "${HOST_COMFYUI_ROOT:-${COMFYUI_ROOT:-/glacier/ai/models/}}"
-      target: "${CONTAINER_COMFYUI_ROOT:-/workspace/ComfyUI/models/}"
-      read_only: true
-      bind:
-        create_host_path: true
-  tty: true
-  stdin_open: true
-
 services:
-  comfyui-nvidia:
-    <<: *comfyui
-    privileged: true
+  comfyui:
+    image: "pmikus/stable-diffusion-comfy-ui:latest"
+    platform: "linux/amd64"
+    build:
+      context: .
+      dockerfile: "Dockerfile"
+      args:
+        RELEASE: "local"
+        BASE_IMAGE: "pmikus/ai-base:local-cuda12.4.1"
+        CU_VERSION: "cu118"
+        TORCH_VERSION: "2.4.1cu124"
+        XFORMERS_VERSION: "0.0.28.post1"
     dns: 1.1.1.1
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: "nvidia"
-              count: 1
-              capabilities: ["gpu"]
-
+    # Create a .env file in the same directory as this docker-compose.yml file
+    # and populate it with environment variables. See .env.sample
+    env_file:
+      - ".env"
+      # variables without a default will automatically inherit from the host environment
+    environment:
+      - "COMFYUI_FLAGS=${COMFYUI_FLAGS:-}"
+      - "COMFYUI_PORT_HOST=${COMFYUI_PORT_HOST:-3000}"
+      - "COMFYUI_METRICS_PORT=${COMFYUI_METRICS_PORT:-33000}"
+      - "COMFYUI_URL=${COMFYUI_URL:-}"
+    extends:
+      file: hwaccel.ml.yml
+      service: cuda # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the `-wsl` version for WSL2 where applicable
+    ports:
+      # ComfyUI web interface
+      - "${COMFYUI_PORT_HOST:-3000}:${COMFYUI_PORT_HOST:-8188}"
+    privileged: true
+    volumes:
+      - type: "bind"
+        source: "${HOST_COMFYUI_ROOT:-${COMFYUI_ROOT:-/glacier/ai/models/}}"
+        target: "${CONTAINER_COMFYUI_ROOT:-/workspace/ComfyUI/models/}"
+        read_only: true
+        bind:
+          create_host_path: true
+    tty: true
+    stdin_open: true
   nginx:
     image: "nginx"
     restart: "always"
