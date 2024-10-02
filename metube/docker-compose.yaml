@@ -1,0 +1,10 @@
+services:
+  metube:
+    image: "ghcr.io/alexta69/metube"
+    container_name: "metube"
+    hostname: "metube.osiris"
+    restart: "unless-stopped"
+    ports:
+      - "8945:8081"
+    volumes:
+      - ${HOME}/downloads:/downloads
