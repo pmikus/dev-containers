@@ -2,9 +2,19 @@ services:
   metube:
     image: "ghcr.io/alexta69/metube"
     container_name: "metube"
-    hostname: "metube.osiris"
+    hostname: "metube"
     restart: "unless-stopped"
+    networks:
+      - "proxy"
     ports:
       - "8945:8081"
     volumes:
-      - ${HOME}/downloads:/downloads
+      - "${HOME}/downloads:/downloads"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.metube.rule=Host(`metube.localhost`)"
+      - "traefik.http.routers.metube.entrypoints=http"
+
+networks:
+  proxy:
+    external: true
