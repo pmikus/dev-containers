@@ -11,7 +11,6 @@ services:
         CU_VERSION: "cu118"
         TORCH_VERSION: "2.4.1cu124"
         XFORMERS_VERSION: "0.0.28.post1"
-    dns: 1.1.1.1
     # Create a .env file in the same directory as this docker-compose.yml file
     # and populate it with environment variables. See .env.sample
     env_file:
@@ -25,9 +24,8 @@ services:
     extends:
       file: hwaccel.ml.yml
       service: cuda # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the `-wsl` version for WSL2 where applicable
-    ports:
-      # ComfyUI web interface
-      - "${COMFYUI_PORT_HOST:-3000}:${COMFYUI_PORT_HOST:-8188}"
+    networks:
+      - "proxy"
     privileged: true
     volumes:
       - type: "bind"
@@ -38,16 +36,14 @@ services:
           create_host_path: true
     tty: true
     stdin_open: true
-  nginx:
-    image: "nginx"
-    restart: "always"
-    volumes:
-      - "./default.conf.template:/etc/nginx/templates/default.conf.template:ro"
-    ports:
-      - "3001:3001"
-    depends_on:
-      - "comfyui-nvidia"
-    environment:
-      - "COMFYUI_HOST=comfyui-nvidia"
-      - "COMFYUI_PORT=3000"
-      - "NGINX_PORT=3001"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.comfyui.entrypoints=https"
+      - "traefik.http.routers.comfyui.tls=true"
+      - "traefik.http.services.comfyui.loadbalancer.server.port=8188"
+      - "traefik.http.services.comfyui.loadbalancer.server.scheme=http"
+
+networks:
+  proxy:
+    external: true
