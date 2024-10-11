@@ -2,7 +2,7 @@ name: immich
 
 services:
   immich-server:
-    container_name: immich_server
+    container_name: immich
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     # extends:
     #   file: hwaccel.transcoding.yml
@@ -21,6 +21,12 @@ services:
     restart: always
     healthcheck:
       disable: false
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.immich.tls=true"
+      - "traefik.http.services.immich.loadbalancer.server.port=3001"
+      - "traefik.http.services.immich.loadbalancer.server.scheme=http"
 
   immich-machine-learning:
     container_name: immich_machine_learning
@@ -63,6 +69,10 @@ services:
       start_period: 5m
     command: ["postgres", "-c", "shared_preload_libraries=vectors.so", "-c", 'search_path="$$user", public, vectors', "-c", "logging_collector=on", "-c", "max_wal_size=2GB", "-c", "shared_buffers=512MB", "-c", "wal_compression=on"]
     restart: always
+
+networks:
+  proxy:
+    external: true
 
 volumes:
   model-cache:

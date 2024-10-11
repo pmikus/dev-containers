@@ -6,14 +6,15 @@ services:
     restart: "unless-stopped"
     networks:
       - "proxy"
-    ports:
-      - "8945:8081"
     volumes:
       - "${HOME}/downloads:/downloads"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.metube.rule=Host(`metube.localhost`)"
-      - "traefik.http.routers.metube.entrypoints=http"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.metube.entrypoints=https"
+      - "traefik.http.routers.metube.tls=true"
+      - "traefik.http.services.metube.loadbalancer.server.port=8081"
+      - "traefik.http.services.metube.loadbalancer.server.scheme=http"
 
 networks:
   proxy:

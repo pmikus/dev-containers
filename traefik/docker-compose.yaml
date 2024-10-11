@@ -12,8 +12,7 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      CF_DNS_API_TOKEN_FILE: "/run/secrets/cf_api_token" # note using _FILE for docker secrets
-      # CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN} # if using .env
+      CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN} # if using .env
       TRAEFIK_DASHBOARD_CREDENTIALS: ${TRAEFIK_DASHBOARD_CREDENTIALS}
     secrets:
       - "cf_api_token"
@@ -21,29 +20,26 @@ services:
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./traefik.yml:/traefik.yml:ro"
-      - "./acme.json:/acme.json"
-      # - ./data/config.yml:/config.yml:ro
+      - "./data/traefik.yml:/traefik.yml:ro"
+      - "./data/acme.json:/acme.json"
+      - "./data/config.yml:/config.yml:ro"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik.entrypoints=http"
-      - "traefik.http.routers.traefik.rule=Host(`traefik-dashboard.localhost`)"
+      - "traefik.docker.network=proxy"
       - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
       - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.routers.traefik.entrypoints=http"
+      - "traefik.http.routers.traefik.rule=Host(`traefik-dashboard.localhost`)"
       - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
-      - "traefik.http.routers.traefik-dashboard.entrypoints=https"
-      - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik-dashboard.localhost`)"
-      - "traefik.http.routers.traefik-dashboard.middlewares=traefik-auth"
-      - "traefik.http.routers.traefik-dashboard.tls=true"
-#      - "traefik.http.routers.traefik-dashboard.tls.certresolver=cloudflare"
-#      - "traefik.http.routers.traefik-dashboard.tls.domains[0].main=localhost"
-#      - "traefik.http.routers.traefik-dashboard.tls.domains[0].sans=*.localhost"
-      - "traefik.http.routers.traefik-dashboard.service=api@internal"
-
-secrets:
-  cf_api_token:
-    file: "./cf_api_token.txt"
+      - "traefik.http.routers.traefik-secure.entrypoints=https"
+      - "traefik.http.routers.traefik-secure.rule=Host(`traefik-dashboard.localhost`)"
+      - "traefik.http.routers.traefik-secure.middlewares=traefik-auth"
+      - "traefik.http.routers.traefik-secure.tls=true"
+#      - "traefik.http.routers.traefik-secure.tls.certresolver=cloudflare"
+#      - "traefik.http.routers.traefik-secure.tls.domains[0].main=localhost"
+#      - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.localhost"
+      - "traefik.http.routers.traefik-secure.service=api@internal"
 
 networks:
   proxy:
