@@ -12,10 +12,8 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN} # if using .env
+      CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN}
       TRAEFIK_DASHBOARD_CREDENTIALS: ${TRAEFIK_DASHBOARD_CREDENTIALS}
-    secrets:
-      - "cf_api_token"
     env_file: ".env"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"

@@ -1,11 +1,11 @@
 services:
   metube:
-    image: "ghcr.io/alexta69/metube"
     container_name: "metube"
+    image: "ghcr.io/alexta69/metube"
     hostname: "metube"
-    restart: "unless-stopped"
     networks:
       - "proxy"
+    restart: "unless-stopped"
     volumes:
       - "${HOME}/downloads:/downloads"
     labels:
