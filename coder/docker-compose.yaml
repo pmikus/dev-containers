@@ -1,0 +1,28 @@
+services:
+  code-server:
+    container_name: "code-server"
+    image: "lscr.io/linuxserver/code-server:${CODE_SERVER_VERSION:-latest}"
+    hostname: "code-server"
+    networks:
+      - "proxy"
+    restart: "unless-stopped"
+    environment:
+      - "PUID=1000"
+      - "PGID=1000"
+      - "TZ=Etc/UTC"
+      - "PROXY_DOMAIN=code-server.localhost" #optional
+      - "DEFAULT_WORKSPACE=/config/workspace" #optional
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      #- /path/to/code-server/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.code-server.entrypoints=https"
+      - "traefik.http.routers.code-server.tls=true"
+      - "traefik.http.services.code-server.loadbalancer.server.port=8443"
+      - "traefik.http.services.code-server.loadbalancer.server.scheme=http"
+
+networks:
+  proxy:
+    external: true

@@ -1,8 +1,7 @@
 ---
 api:
   dashboard: true
-  debug: true
-  insecure: true
+  debug: false
 entryPoints:
   http:
     address: ":80"
@@ -16,8 +15,6 @@ entryPoints:
 global:
   checknewversion: false
   sendanonymoususage: false
-serversTransport:
-  insecureSkipVerify: true
 providers:
   docker:
     defaultRule: "Host(`{{ index .Labels \"com.docker.compose.service\"}}.localhost`)"
@@ -25,7 +22,7 @@ providers:
     exposedByDefault: false
     watch: true
   file:
-    filename: /config.yml
+    filename: "/config.yml"
 
 #certificatesResolvers:
 #  cloudflare:
