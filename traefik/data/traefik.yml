@@ -1,4 +1,6 @@
 ---
+accesslog:
+  addInternals: true
 api:
   dashboard: true
   debug: false
@@ -15,6 +17,8 @@ entryPoints:
 global:
   checknewversion: false
   sendanonymoususage: false
+metrics:
+  addInternals: true
 providers:
   docker:
     defaultRule: "Host(`{{ index .Labels \"com.docker.compose.service\"}}.localhost`)"
@@ -23,6 +27,8 @@ providers:
     watch: true
   file:
     filename: "/config.yml"
+tracing:
+  addInternals: true
 
 #certificatesResolvers:
 #  cloudflare:

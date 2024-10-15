@@ -1,0 +1,10 @@
+services:
+  ghost:
+    image: fractalf/ghost
+    volumes:
+      - './data/ghost:/ghost-override'
+    environment:
+      PROXY_LOCATION: ghost
+      VIRTUAL_HOST: ghost.localhost
+      VIRTUAL_PORT: 2368
+    restart: always

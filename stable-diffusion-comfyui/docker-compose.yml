@@ -23,7 +23,7 @@ services:
       - "COMFYUI_URL=${COMFYUI_URL:-}"
     extends:
       file: hwaccel.ml.yml
-      service: cuda # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the `-wsl` version for WSL2 where applicable
+      service: cuda # set to one of [armnn, cuda, openvino, openvino-wsl]
     networks:
       - "proxy"
     privileged: true

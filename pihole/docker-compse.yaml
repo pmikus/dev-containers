@@ -1,0 +1,33 @@
+services:
+  pihole:
+    container_name: "pihole"
+    image: "pihole/pihole:latest"
+    hostname: "pihole"
+    networks:
+      - "proxy"
+    restart: "unless-stopped"
+    ports:
+      - '53:53/tcp'
+      - '53:53/udp'
+      - "67:67/udp"
+    volumes:
+      - "./etc-pihole:/etc/pihole"
+      - "./etc-dnsmasq.d:/etc/dnsmasq.d"
+    extra_hosts:
+      # Resolve to nothing domains (terminate connection)
+      - 'nw2master.bioware.com nwn2.master.gamespy.com:0.0.0.0'
+      # LAN hostnames for other docker containers using nginx-proxy
+      - 'pihole pihole.localhost:192.168.41.55'
+      - 'ghost ghost.localhost:192.168.41.55'
+      - 'metube metube.localhost:192.168.41.55'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.pihole.entrypoints=https"
+      - "traefik.http.routers.pihole.tls=true"
+      - "traefik.http.services.metube.loadbalancer.server.port=80"
+      - "traefik.http.services.metube.loadbalancer.server.scheme=http"
+
+networks:
+  proxy:
+    external: true
