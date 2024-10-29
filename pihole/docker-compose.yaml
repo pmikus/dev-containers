@@ -14,8 +14,6 @@ services:
       - "./etc-pihole:/etc/pihole"
       - "./etc-dnsmasq.d:/etc/dnsmasq.d"
     extra_hosts:
-      # Resolve to nothing domains (terminate connection)
-      - 'nw2master.bioware.com nwn2.master.gamespy.com:0.0.0.0'
       # LAN hostnames for other docker containers using nginx-proxy
       - 'pihole pihole.localhost:192.168.41.55'
       - 'ghost ghost.localhost:192.168.41.55'

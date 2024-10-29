@@ -1,10 +1,39 @@
 services:
   ghost:
-    image: fractalf/ghost
-    volumes:
-      - './data/ghost:/ghost-override'
+    image: "ghost:5-alpine"
+    restart: "unless-stopped"
     environment:
-      PROXY_LOCATION: ghost
-      VIRTUAL_HOST: ghost.localhost
-      VIRTUAL_PORT: 2368
-    restart: always
+      database__client: "mysql"
+      database__connection__host: "db"
+      database__connection__user: "root"
+      database__connection__password: "example"
+      database__connection__database: "ghost"
+      # this url value is just an example, and is likely wrong for your environment!
+      url: http://ghost.localhost:80
+      # contrary to the default mentioned in the linked documentation, this image defaults to NODE_ENV=production (so development mode needs to be explicitly specified if desired)
+      NODE_ENV: "development"
+    volumes:
+      - "ghost:/var/lib/ghost/content"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.ghost.entrypoints=https"
+      - "traefik.http.routers.ghost.tls=true"
+      - "traefik.http.services.ghost.loadbalancer.server.port=2368"
+      - "traefik.http.services.ghost.loadbalancer.server.scheme=http"
+
+  db:
+    image: "mysql:8.0"
+    restart: "unless-stopped"
+    environment:
+      MYSQL_ROOT_PASSWORD: "example"
+    volumes:
+      - "db:/var/lib/mysql"
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  ghost:
+  db:

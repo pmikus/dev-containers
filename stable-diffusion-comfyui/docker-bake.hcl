@@ -3,7 +3,7 @@ variable "IMAGE_REPOSITORY" {
 }
 
 variable "RELEASE" {
-    default = "0.0.1"
+    default = "0.2.4"
 }
 
 variable "CU_VERSION" {
