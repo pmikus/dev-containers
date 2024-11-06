@@ -22,7 +22,7 @@ services:
       - "COMFYUI_METRICS_PORT=${COMFYUI_METRICS_PORT:-33000}"
       - "COMFYUI_URL=${COMFYUI_URL:-}"
     extends:
-      file: hwaccel.ml.yml
+      file: ../extends/hwaccel.ml.yml
       service: cuda # set to one of [armnn, cuda, openvino, openvino-wsl]
     networks:
       - "proxy"

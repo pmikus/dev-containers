@@ -2,7 +2,7 @@ services:
   tilde:
     container_name: "tilde"
     image: "nginx:latest"
-    hostname: "metube"
+    hostname: "tilde"
     networks:
       - "proxy"
     restart: "unless-stopped"

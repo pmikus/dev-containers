@@ -1,0 +1,34 @@
+services:
+  minio:
+    container_name: "minio"
+    image: minio/minio:latest
+    hostname: "minio"
+    networks:
+      - "proxy"
+    restart: "unless-stopped"
+    volumes:
+      - minio-data:/data
+    command:
+      - "server"
+      - "/data"
+      - "--console-address"
+      - ":9001"
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=minio1234
+      - MINIO_BROWSER_REDIRECT_URL=http://minio.localhost
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=proxy"
+        - "traefik.http.services.minio.loadbalancer.server.port=9000"
+        - "traefik.http.routers.minio-console.service=minio-console"
+        - "traefik.http.routers.minio-console.rule=Host(`minio-console.localhost`)"
+        - "traefik.http.services.minio-console.loadbalancer.server.port=9001"
+
+volumes:
+  minio-data:
+
+networks:
+  proxy:
+    external: true
