@@ -63,18 +63,13 @@
   ],
   "widgets": [
     {
-      "id": "971aa859-8570-49a1-8d34-dd5c7b3638d1",
-      "type": "date",
+      "id": "b4d62ecc-41b7-48da-956e-e3853c8439c9",
+      "type": "calendar",
       "properties": {
-        "display24HourFormat": true,
-        "dateFormat": "hide",
-        "enableTimezone": false,
-        "timezoneLocation": {
-          "name": "Paris",
-          "latitude": 48.85341,
-          "longitude": 2.3488
-        },
-        "titleState": "city"
+        "hideWeekDays": true,
+        "showUnmonitored": false,
+        "radarrReleaseType": "inCinemas",
+        "fontSize": "xs"
       },
       "area": {
         "type": "wrapper",
@@ -85,32 +80,32 @@
       "shape": {
         "sm": {
           "location": {
-            "x": 1,
+            "x": 0,
             "y": 0
           },
           "size": {
-            "width": 1,
-            "height": 1
+            "width": 2,
+            "height": 2
           }
         },
         "md": {
           "location": {
-            "x": 4,
+            "x": 0,
             "y": 0
           },
           "size": {
-            "width": 1,
-            "height": 1
+            "width": 2,
+            "height": 2
           }
         },
         "lg": {
           "location": {
-            "x": 3,
-            "y": 1
+            "x": 0,
+            "y": 3
           },
           "size": {
             "width": 4,
-            "height": 1
+            "height": 2
           }
         }
       }
@@ -156,24 +151,29 @@
         },
         "lg": {
           "location": {
-            "x": 3,
-            "y": 2
+            "x": 4,
+            "y": 4
           },
           "size": {
-            "width": 4,
+            "width": 6,
             "height": 1
           }
         }
       }
     },
     {
-      "id": "b4d62ecc-41b7-48da-956e-e3853c8439c9",
-      "type": "calendar",
+      "id": "971aa859-8570-49a1-8d34-dd5c7b3638d1",
+      "type": "date",
       "properties": {
-        "hideWeekDays": true,
-        "showUnmonitored": false,
-        "radarrReleaseType": "inCinemas",
-        "fontSize": "xs"
+        "display24HourFormat": true,
+        "dateFormat": "hide",
+        "enableTimezone": false,
+        "timezoneLocation": {
+          "name": "Paris",
+          "latitude": 48.85341,
+          "longitude": 2.3488
+        },
+        "titleState": "city"
       },
       "area": {
         "type": "wrapper",
@@ -184,32 +184,32 @@
       "shape": {
         "sm": {
           "location": {
-            "x": 0,
+            "x": 1,
             "y": 0
           },
           "size": {
-            "width": 2,
-            "height": 2
+            "width": 1,
+            "height": 1
           }
         },
         "md": {
           "location": {
-            "x": 0,
+            "x": 4,
             "y": 0
           },
           "size": {
-            "width": 2,
-            "height": 2
+            "width": 1,
+            "height": 1
           }
         },
         "lg": {
           "location": {
-            "x": 3,
+            "x": 4,
             "y": 3
           },
           "size": {
-            "width": 4,
-            "height": 2
+            "width": 6,
+            "height": 1
           }
         }
       }
