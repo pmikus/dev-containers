@@ -7,7 +7,7 @@ variable "RELEASE" {
 }
 
 variable "TORCH_VERSION" {
-    default = "2.5.0"
+    default = "2.5.1"
 }
 
 variable "XFORMERS_VERSION" {
@@ -29,7 +29,6 @@ target "cpu" {
     ]
     platforms = [
       "linux/amd64",
-      "linux/arm64"
     ]
     args = {
         RELEASE = "${RELEASE}"

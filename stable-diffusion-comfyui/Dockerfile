@@ -24,10 +24,10 @@ RUN if [ "$CU_VERSION" = "cpu" ]; then \
         extra_packages="xformers==${XFORMERS_VERSION}"; \
     fi && \
     uv venv && \
-    pip install --upgrade --no-cache-dir pip && \
-    pip install --upgrade setuptools && \
-    pip install --upgrade wheel && \
-    pip install --upgrade --no-cache-dir \
+    uv pip install --upgrade --no-cache-dir pip && \
+    uv pip install --upgrade setuptools && \
+    uv pip install --upgrade wheel && \
+    uv pip install --upgrade --no-cache-dir \
       torch==${TORCH_VERSION} \
       torchvision \
       torchaudio \
@@ -37,24 +37,24 @@ RUN if [ "$CU_VERSION" = "cpu" ]; then \
 # Install ComfyUI
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git && \
     cd ComfyUI && \
-    pip install -r requirements.txt
+    uv pip install -r requirements.txt
 
 WORKDIR /workspace/ComfyUI/custom_nodes/
 
 # Install ComfyUI Manager
 RUN git clone https://github.com/ltdrdata/ComfyUI-Manager && \
     cd ComfyUI-Manager && \
-    pip install -r requirements.txt
+    uv pip install -r requirements.txt
 
 # Install Custom nodes for ComfyUI
 RUN git clone https://github.com/Stability-AI/stability-ComfyUI-nodes && \
     cd stability-ComfyUI-nodes && \
-    pip install -r requirements.txt
+    uv pip install -r requirements.txt
 
 # Install ComfyUI's ControlNet Auxiliary Preprocessors
 RUN git clone https://github.com/Fannovel16/comfyui_controlnet_aux && \
     cd comfyui_controlnet_aux && \
-    pip install -r requirements.txt
+    uv pip install -r requirements.txt
 
 # Install ComfyUI Noise
 RUN git clone https://github.com/BlenderNeko/ComfyUI_Noise
@@ -65,20 +65,20 @@ RUN git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive
 # Install Efficiency Nodes
 RUN git clone https://github.com/jags111/efficiency-nodes-comfyui && \
     cd efficiency-nodes-comfyui && \
-    pip install -r requirements.txt
+    uv pip install -r requirements.txt
 
 # Install BNB Nodes & GGUF
 RUN git clone https://github.com/comfyanonymous/ComfyUI_bitsandbytes_NF4 && \
     cd ComfyUI_bitsandbytes_NF4 && \
-    pip install -r requirements.txt
+    uv pip install -r requirements.txt
 
 RUN git clone https://github.com/DenkingOfficial/ComfyUI_UNet_bitsandbytes_NF4 && \
     cd ComfyUI_UNet_bitsandbytes_NF4 && \
-    pip install -r requirements.txt
+    uv pip install -r requirements.txt
 
 RUN git clone https://github.com/city96/ComfyUI-GGUF && \
     cd ComfyUI-GGUF && \
-    pip install -r requirements.txt
+    uv pip install -r requirements.txt
 
 WORKDIR /workspace/ComfyUI
 
