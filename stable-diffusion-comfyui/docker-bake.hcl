@@ -7,7 +7,7 @@ variable "RELEASE" {
 }
 
 variable "TORCH_VERSION" {
-    default = "2.5.1"
+    default = "2.5.0"
 }
 
 variable "XFORMERS_VERSION" {
