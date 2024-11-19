@@ -1,6 +1,6 @@
 # Import necessary base images
 ARG BASE_IMAGE
-FROM ${BASE_IMAGE} as runtime
+FROM ${BASE_IMAGE} AS runtime
 
 ARG TORCH_VERSION
 ARG CU_VERSION
