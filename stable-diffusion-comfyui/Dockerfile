@@ -28,9 +28,9 @@ RUN if [ "$CU_VERSION" = "cpu" ]; then \
     uv pip install --upgrade setuptools && \
     uv pip install --upgrade wheel && \
     uv pip install --upgrade --no-cache-dir \
-      torch \
+      torch==${TORCH_VERSION} \
       torchvision \
-      torchaudio \
+      torchaudio==${TORCH_VERSION} \
       ${extra_packages} \
       --extra-index-url https://download.pytorch.org/whl/${CU_VERSION}
 #    uv pip install --upgrade --no-cache-dir \
