@@ -38,7 +38,9 @@ services:
     environment:
       - "PUID=${PUID:-1000}"
       - "PGID=${PGID:-1000}"
-      - 'OLLAMA_BASE_URL=http://ollama:11434'
+      - "OLLAMA_BASE_URL=http://ollama:11434"
+      - "ENABLE_IMAGE_GENERATION=True"
+      - "COMFYUI_BASE_URL=http://comfyui:8188"
       - "ENABLE_RAG_WEB_SEARCH=True"
       - "RAG_WEB_SEARCH_ENGINE=searxng"
       - "RAG_WEB_SEARCH_RESULT_COUNT=3"
@@ -69,10 +71,16 @@ services:
     environment:
       - "PUID=${PUID:-1000}"
       - "PGID=${PGID:-1000}"
+    cap_drop:
+      - "ALL"
+    cap_add:
+      - "CHOWN"
+      - "SETGID"
+      - "SETUID"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-      - "./searxng:/etc/searxng"
+      - "./searxng:/etc/searxng:rw"
     depends_on:
       - "ollama"
       - "open-webui"

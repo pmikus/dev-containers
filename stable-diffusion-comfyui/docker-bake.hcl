@@ -6,14 +6,6 @@ variable "RELEASE" {
     default = "0.2.4"
 }
 
-variable "CU_VERSION" {
-    default = "cu124"
-}
-
-variable "CUDA_VERSION" {
-    default = "cuda12.4.1"
-}
-
 variable "TORCH_VERSION" {
     default = "2.4.1"
 }
@@ -24,24 +16,44 @@ variable "XFORMERS_VERSION" {
 
 group "default" {
     targets = [
-      "cuda"
+      "cpu",
+      "cuda-12-4-1"
     ]
 }
 
-target "cuda" {
+target "cpu" {
     dockerfile = "Dockerfile"
     tags = [
       "${IMAGE_REPOSITORY}:latest",
-      "${IMAGE_REPOSITORY}:${RELEASE}-${CUDA_VERSION}"
+      "${IMAGE_REPOSITORY}:${RELEASE}-cpu"
+    ]
+    platforms = [
+      "linux/amd64",
+      "linux/arm64"
+    ]
+    args = {
+        RELEASE = "${RELEASE}"
+        BASE_IMAGE = "pmikus/ai-base:0.0.1-cpu"
+        CU_VERSION = "cpu"
+        TORCH_VERSION = "${TORCH_VERSION}+cpu"
+        XFORMERS_VERSION = "${XFORMERS_VERSION}"
+    }
+}
+
+target "cuda-12-4-1" {
+    dockerfile = "Dockerfile"
+    tags = [
+      "${IMAGE_REPOSITORY}:latest",
+      "${IMAGE_REPOSITORY}:${RELEASE}-cuda12.4.1"
     ]
     platforms = [
       "linux/amd64"
     ]
     args = {
         RELEASE = "${RELEASE}"
-        BASE_IMAGE = "pmikus/ai-base:${RELEASE}-${CUDA_VERSION}"
-        CU_VERSION = "${CU_VERSION}"
-        TORCH_VERSION = "${TORCH_VERSION}+${CU_VERSION}"
+        BASE_IMAGE = "pmikus/ai-base:0.0.1-cuda12.4.1"
+        CU_VERSION = "cu124"
+        TORCH_VERSION = "${TORCH_VERSION}+cu124"
         XFORMERS_VERSION = "${XFORMERS_VERSION}"
     }
 }
