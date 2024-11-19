@@ -16,7 +16,7 @@ variable "XFORMERS_VERSION" {
 
 group "default" {
     targets = [
-      "cpu"
+      "cuda-12-4-1"
     ]
 }
 
