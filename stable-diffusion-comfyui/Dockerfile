@@ -21,7 +21,7 @@ WORKDIR /workspace
 RUN if [ "$CU_VERSION" = "cpu" ]; then \
         extra_packages=""; \
     else \
-        extra_packages="xformers==${XFORMERS_VERSION}"; \
+        extra_packages="torchaudio xformers==${XFORMERS_VERSION}"; \
     fi && \
     uv venv && \
     pip install --upgrade --no-cache-dir pip && \
@@ -30,7 +30,6 @@ RUN if [ "$CU_VERSION" = "cpu" ]; then \
     pip install --upgrade --no-cache-dir \
       torch==${TORCH_VERSION} \
       torchvision \
-      torchaudio \
       ${extra_packages} \
       --extra-index-url https://download.pytorch.org/whl/${CU_VERSION}
 
