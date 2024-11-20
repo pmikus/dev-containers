@@ -33,9 +33,6 @@ RUN if [ "$CU_VERSION" = "cpu" ]; then \
       torchaudio==${TORCH_VERSION} \
       ${extra_packages} \
       --extra-index-url https://download.pytorch.org/whl/${CU_VERSION}
-#    uv pip install --upgrade --no-cache-dir \
-#      torchaudio \
-#      --extra-index-url https://download.pytorch.org/whl/
 
 # Install ComfyUI
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git && \

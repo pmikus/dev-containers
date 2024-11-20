@@ -13,6 +13,14 @@ group "default" {
     ]
 }
 
+group "all" {
+    targets = [
+      "cpu",
+      "cuda-12-4-1",
+      "cuda-12-6-1"
+    ]
+}
+
 target "cpu" {
     dockerfile = "Dockerfile"
     tags = [

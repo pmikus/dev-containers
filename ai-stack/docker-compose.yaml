@@ -71,12 +71,6 @@ services:
     environment:
       - "PUID=${PUID:-1000}"
       - "PGID=${PGID:-1000}"
-    cap_drop:
-      - "ALL"
-    cap_add:
-      - "CHOWN"
-      - "SETGID"
-      - "SETUID"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
@@ -84,6 +78,12 @@ services:
     depends_on:
       - "ollama"
       - "open-webui"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.searxng.entrypoints=https"
+      - "traefik.http.routers.searxng.tls=true"
+#      - "traefik.http.routers.open-webui.middlewares=default-headers@file"
+      - "traefik.http.services.searxng.loadbalancer.server.port=8080"
 
 networks:
   proxy:
