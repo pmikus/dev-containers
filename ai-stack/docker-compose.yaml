@@ -19,11 +19,11 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.ollama.entrypoints=https"
       - "traefik.http.routers.ollama.tls=true"
-#      - "traefik.http.routers.ollama.middlewares=default-headers@file"
-#      - "traefik.http.routers.ollama.middlewares=ollama-auth"
+      - "traefik.http.routers.ollama.middlewares=default-headers@file"
+      - "traefik.http.routers.ollama.middlewares=ollama-auth"
       - "traefik.http.services.ollama.loadbalancer.server.port=11434"
-#      - "traefik.http.routers.ollama.middlewares=auth"
-#      - "traefik.http.middlewares.auth.basicauth.users=${OLLAMA_API_CREDENTIALS}"
+      - "traefik.http.routers.ollama.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=${OLLAMA_API_CREDENTIALS}"
     extends:
       file: "../extends/hwaccel.ml.yml"
       service: "cpu" # set to one of [armnn, cuda, openvino, openvino-wsl]
