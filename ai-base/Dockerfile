@@ -136,8 +136,9 @@ RUN if [ "$CU_VERSION" = "cpu" ]; then \
     else \
         extra_packages="xformers==${XFORMERS_VERSION}"; \
     fi && \
-    $HOME/.local/uv venv && \
-    $HOME/.local/uv pip install --upgrade --no-cache-dir \
+    source $HOME/.local/bin/env && \
+    uv venv && \
+    uv pip install --upgrade --no-cache-dir \
       torch==${TORCH_VERSION} \
       torchvision \
       torchaudio==${TORCH_VERSION} \
