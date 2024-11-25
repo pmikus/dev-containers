@@ -13,7 +13,7 @@ cu124 = [
   "torch>=2.4.1",
   "torchaudio>=2.4.1",
   "torchvision>=0.20.1",
-  "xformers>=0.0.28.post1
+  "xformers>=0.0.28.post1"
 ]
 
 [tool.uv]
