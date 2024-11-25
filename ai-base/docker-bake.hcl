@@ -6,18 +6,9 @@ variable "RELEASE" {
     default = "0.0.1"
 }
 
-variable "TORCH_VERSION" {
-    default = "2.4.1"
-}
-
-variable "XFORMERS_VERSION" {
-    default = "0.0.28.post1"
-}
-
 group "default" {
     targets = [
-      "cpu",
-      "cuda-12-4-1"
+      "cpu"
     ]
 }
 
@@ -43,8 +34,6 @@ target "cpu" {
         BASE_IMAGE = "ubuntu:24.04"
         PYTHON_VERSION = "3.13"
         CU_VERSION = "cpu"
-        TORCH_VERSION = "${TORCH_VERSION}+cpu"
-        XFORMERS_VERSION = "${XFORMERS_VERSION}"
     }
 }
 
@@ -62,8 +51,6 @@ target "cuda-12-4-1" {
         BASE_IMAGE = "nvidia/cuda:12.4.1-devel-ubuntu22.04"
         PYTHON_VERSION = "3.10"
         CU_VERSION = "cu124"
-        TORCH_VERSION = "${TORCH_VERSION}+cu124"
-        XFORMERS_VERSION = "${XFORMERS_VERSION}"
     }
 }
 
@@ -81,7 +68,5 @@ target "cuda-12-6-1" {
         BASE_IMAGE = "nvidia/cuda:12.6.1-devel-ubuntu22.04"
         PYTHON_VERSION = "3.10"
         CU_VERSION = "cu124"
-        TORCH_VERSION = "${TORCH_VERSION}+cu124"
-        XFORMERS_VERSION = "${XFORMERS_VERSION}"
     }
 }
