@@ -24,6 +24,8 @@ ENV HF_HUB_ENABLE_HF_TRANSFER="1"
 ENV VIRTUALENV_OVERRIDE_APP_DATA="/volume/.cache/virtualenv/"
 ENV PIP_CACHE_DIR="/volume/.cache/pip/"
 ENV UV_CACHE_DIR="/volume/.cache/uv/"
+ENV PATH="/workspace/venv/bin:$PATH"
+ENV PATH="/root/.cargo/bin:$PATH"
 
 # Set Default Python Version
 ARG PYTHON_VERSION
