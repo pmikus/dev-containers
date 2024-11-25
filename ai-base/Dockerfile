@@ -29,6 +29,10 @@ ENV UV_CACHE_DIR="/volume/.cache/uv/"
 ARG PYTHON_VERSION
 ENV PYTHON_VERSION=${PYTHON_VERSION}
 
+ARG TORCH_VERSION
+ARG CU_VERSION
+ARG XFORMERS_VERSION
+
 WORKDIR /
 
 # Update, upgrade, install packages and clean up
@@ -120,14 +124,25 @@ RUN apt-get update --yes && \
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
     python${PYTHON_VERSION} get-pip.py
 
-# Get the latest pip for all python versions
-RUN python${PYTHON_VERSION} -m pip install --upgrade pip
-
 # Install virtualenv
 RUN python${PYTHON_VERSION} -m pip install virtualenv
 
 # Install pip drop-in replacement uv (https://github.com/astral-sh/uv)
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install absolut minimum
+RUN if [ "$CU_VERSION" = "cpu" ]; then \
+        extra_packages=""; \
+    else \
+        extra_packages="xformers==${XFORMERS_VERSION}"; \
+    fi && \
+    uv venv && \
+    uv pip install --upgrade --no-cache-dir \
+      torch==${TORCH_VERSION} \
+      torchvision \
+      torchaudio==${TORCH_VERSION} \
+      ${extra_packages} \
+      --extra-index-url https://download.pytorch.org/whl/${CU_VERSION}
 
 # Start Scripts
 COPY start.sh /
