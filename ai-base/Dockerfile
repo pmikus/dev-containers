@@ -131,6 +131,8 @@ RUN python${PYTHON_VERSION} -m pip install virtualenv
 # Install pip drop-in replacement uv (https://github.com/astral-sh/uv)
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
 # Install absolut minimum
 RUN if [ "$CU_VERSION" = "cpu" ]; then \
         extra_packages=""; \
