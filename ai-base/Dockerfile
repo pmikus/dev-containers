@@ -25,6 +25,7 @@ ENV VIRTUALENV_OVERRIDE_APP_DATA="/volume/.cache/virtualenv/"
 ENV PIP_CACHE_DIR="/volume/.cache/pip/"
 ENV UV_CACHE_DIR="/volume/.cache/uv/"
 ENV PATH="/root/.local/bin:$PATH"
+ENV PATH="/app/.venv/bin:$PATH"
 
 # Set Default Python Version
 ARG PYTHON_VERSION
@@ -129,14 +130,21 @@ RUN python${PYTHON_VERSION} -m pip install virtualenv
 # Install pip drop-in replacement uv (https://github.com/astral-sh/uv)
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# Install dependencies
-#RUN --mount=type=cache,target=/root/.cache/uv \
-#    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-#    uv sync --frozen --no-install-project
+# Install the project into `/app`
+WORKDIR /app
+
+# Enable bytecode compilation
+ENV UV_COMPILE_BYTECODE=1
+
+# Copy from the cache instead of linking since it's a mounted volume
+ENV UV_LINK_MODE=copy
 
 # Install dependencies
-RUN --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --frozen --no-install-project --extra "$CU_VERSION"
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project && \
+    uv sync --extra "$CU_VERSION"
 
 # Start Scripts
 COPY start.sh /
