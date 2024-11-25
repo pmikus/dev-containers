@@ -24,8 +24,6 @@ ENV HF_HUB_ENABLE_HF_TRANSFER="1"
 ENV VIRTUALENV_OVERRIDE_APP_DATA="/volume/.cache/virtualenv/"
 ENV PIP_CACHE_DIR="/volume/.cache/pip/"
 ENV UV_CACHE_DIR="/volume/.cache/uv/"
-ENV PATH="/workspace/venv/bin:$PATH"
-ENV PATH="/root/.cargo/bin:$PATH"
 
 # Set Default Python Version
 ARG PYTHON_VERSION
@@ -138,8 +136,8 @@ RUN if [ "$CU_VERSION" = "cpu" ]; then \
     else \
         extra_packages="xformers==${XFORMERS_VERSION}"; \
     fi && \
-    uv venv && \
-    uv pip install --upgrade --no-cache-dir \
+    $HOME/.local/uv venv && \
+    $HOME/.local/uv pip install --upgrade --no-cache-dir \
       torch==${TORCH_VERSION} \
       torchvision \
       torchaudio==${TORCH_VERSION} \
