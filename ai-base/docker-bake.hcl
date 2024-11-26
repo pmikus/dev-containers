@@ -8,7 +8,8 @@ variable "RELEASE" {
 
 group "default" {
     targets = [
-      "cpu"
+      "cpu",
+      "cuda-12-4-1"
     ]
 }
 
@@ -26,8 +27,7 @@ target "cpu" {
       "${IMAGE_REPOSITORY}:${RELEASE}-cpu"
     ]
     platforms = [
-      "linux/amd64",
-      "linux/arm64"
+      "linux/amd64"
     ]
     args = {
         BASE_RELEASE_VERSION = "${RELEASE}"
@@ -43,8 +43,7 @@ target "cuda-12-4-1" {
       "${IMAGE_REPOSITORY}:${RELEASE}-cuda12.4.1"
     ]
     platforms = [
-      "linux/amd64",
-      "linux/arm64"
+      "linux/amd64"
     ]
     args = {
         BASE_RELEASE_VERSION = "${RELEASE}"
@@ -61,7 +60,6 @@ target "cuda-12-6-1" {
     ]
     platforms = [
       "linux/amd64",
-      "linux/arm64"
     ]
     args = {
         BASE_RELEASE_VERSION = "${RELEASE}"
