@@ -8,7 +8,7 @@ variable "RELEASE" {
 
 group "default" {
     targets = [
-      "cpu"
+      "cuda-12-4-1"
     ]
 }
 
