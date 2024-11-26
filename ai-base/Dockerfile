@@ -1,5 +1,5 @@
 ARG BASE_IMAGE
-FROM ${BASE_IMAGE}
+FROM ${BASE_IMAGE:-ubuntu:24.04}
 
 ENV SHELL=/bin/bash
 ENV PYTHONUNBUFFERED=True
@@ -143,8 +143,14 @@ ENV UV_LINK_MODE=copy
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv lock && \
     uv sync --frozen --no-install-project --extra "$CU_VERSION"
+
+# Copy the project into the image
+ADD . /app
+
+# Sync the project
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen
 
 # Start Scripts
 COPY start.sh /
