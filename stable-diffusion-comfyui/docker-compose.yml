@@ -8,9 +8,6 @@ services:
       args:
         RELEASE: "local"
         BASE_IMAGE: "pmikus/ai-base:local-cuda12.4.1"
-        CU_VERSION: "cu124"
-        TORCH_VERSION: "2.4.1cu124"
-        XFORMERS_VERSION: "0.0.28.post1"
     # Create a .env file in the same directory as this docker-compose.yml file
     # and populate it with environment variables. See .env.sample
     env_file:

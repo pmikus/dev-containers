@@ -2,10 +2,6 @@
 ARG BASE_IMAGE
 FROM ${BASE_IMAGE} AS runtime
 
-ARG TORCH_VERSION
-ARG CU_VERSION
-ARG XFORMERS_VERSION
-
 # Set working directory and environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
@@ -16,23 +12,6 @@ ENV PATH="/workspace/venv/bin:$PATH"
 ENV PATH="/root/.cargo/bin:$PATH"
 
 WORKDIR /workspace
-
-# Install necessary Python packages
-RUN if [ "$CU_VERSION" = "cpu" ]; then \
-        extra_packages=""; \
-    else \
-        extra_packages="xformers==${XFORMERS_VERSION}"; \
-    fi && \
-    uv venv && \
-    uv pip install --upgrade --no-cache-dir pip && \
-    uv pip install --upgrade setuptools && \
-    uv pip install --upgrade wheel && \
-    uv pip install --upgrade --no-cache-dir \
-      torch==${TORCH_VERSION} \
-      torchvision \
-      torchaudio==${TORCH_VERSION} \
-      ${extra_packages} \
-      --extra-index-url https://download.pytorch.org/whl/${CU_VERSION}
 
 # Install ComfyUI
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git && \
