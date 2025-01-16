@@ -3,20 +3,19 @@ services:
     container_name: "minio"
     image: minio/minio:latest
     hostname: "minio"
+    command: "server /data --console-address :9001"
+    environment:
+      - "MINIO_ROOT_USER=minio"
+      - "MINIO_ROOT_PASSWORD=minio1234"
+      - "MINIO_BROWSER_REDIRECT_URL=https://minio.localhost"
     networks:
       - "proxy"
+      - "minio"
+    #ports:
+    #  - "9001:9001"
     restart: "unless-stopped"
     volumes:
       - minio-data:/data
-    command:
-      - "server"
-      - "/data"
-      - "--console-address"
-      - ":9001"
-    environment:
-      - MINIO_ROOT_USER=minio
-      - MINIO_ROOT_PASSWORD=minio1234
-      - MINIO_BROWSER_REDIRECT_URL=https://minio.localhost
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
@@ -31,5 +30,6 @@ volumes:
   minio-data:
 
 networks:
+  minio:
   proxy:
     external: true

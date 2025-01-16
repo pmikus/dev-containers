@@ -18,6 +18,7 @@ env:
 jobs:
   # Build image.
   build:
+    name: "Build Docker"
     runs-on: "ubuntu-latest"
     permissions:
       packages: "write"
