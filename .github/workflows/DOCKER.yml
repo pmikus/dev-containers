@@ -88,4 +88,5 @@ jobs:
           provenance: ${{ github.event_name != 'pull_request' }}
           push: ${{ github.event_name != 'pull_request' }}
           sbom: ${{ github.event_name != 'pull_request' }}
-          workdir: "${{ matrix.image }}/."
+          source: "."
+          workdir: "./${{ matrix.image }}"
