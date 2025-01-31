@@ -70,6 +70,7 @@ jobs:
             type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
             type=sha
 
       # Build and push Docker image with Buildx
@@ -87,4 +88,4 @@ jobs:
           provenance: ${{ github.event_name != 'pull_request' }}
           push: ${{ github.event_name != 'pull_request' }}
           sbom: ${{ github.event_name != 'pull_request' }}
-          workdir: "${{ matrix.image }}/."
+          #workdir: "${{ matrix.image }}/."
