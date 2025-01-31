@@ -80,7 +80,7 @@ jobs:
         with:
           builder: "${{ steps.docker_buildx.outputs.name }}"
           files: |
-            "./docker-bake.hcl"
+            "${{ matrix.image }}/docker-bake.hcl"
             "${{ steps.docker_meta.outputs.bake-file-tags }}"
             "${{ steps.docker_meta.outputs.bake-file-labels }}"
           load: ${{ github.event_name == 'pull_request' }}
