@@ -1,6 +1,8 @@
 services:
   ghost:
+    container_name: "ghost"
     image: "ghost:5-alpine"
+    hostname: "ghost"
     restart: "unless-stopped"
     environment:
       database__client: "mysql"
@@ -9,9 +11,9 @@ services:
       database__connection__password: "example"
       database__connection__database: "ghost"
       # this url value is just an example, and is likely wrong for your environment!
-      url: http://ghost.localhost:80
+      url: https://ghost.localhost
       # contrary to the default mentioned in the linked documentation, this image defaults to NODE_ENV=production (so development mode needs to be explicitly specified if desired)
-      NODE_ENV: "development"
+      #NODE_ENV: "development"
     volumes:
       - "ghost:/var/lib/ghost/content"
     labels:
@@ -21,6 +23,8 @@ services:
       - "traefik.http.routers.ghost.tls=true"
       - "traefik.http.services.ghost.loadbalancer.server.port=2368"
       - "traefik.http.services.ghost.loadbalancer.server.scheme=http"
+    depends_on:
+      - "db"
 
   db:
     image: "mysql:8.0"

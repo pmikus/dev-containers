@@ -38,6 +38,7 @@ services:
     environment:
       - "PUID=${PUID:-1000}"
       - "PGID=${PGID:-1000}"
+      - "PORT=8080"
       - "OLLAMA_BASE_URL=http://ollama:11434"
       - "ENABLE_IMAGE_GENERATION=True"
       - "COMFYUI_BASE_URL=http://comfyui:8188"
@@ -54,7 +55,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.open-webui.entrypoints=https"
       - "traefik.http.routers.open-webui.tls=true"
-      - "traefik.http.routers.open-webui.middlewares=default-headers@file"
       - "traefik.http.services.open-webui.loadbalancer.server.port=8080"
     depends_on:
       - "ollama"
@@ -82,7 +82,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.searxng.entrypoints=https"
       - "traefik.http.routers.searxng.tls=true"
-      - "traefik.http.routers.open-webui.middlewares=default-headers@file"
       - "traefik.http.services.searxng.loadbalancer.server.port=8080"
 
 networks:
