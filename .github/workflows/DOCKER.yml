@@ -82,8 +82,8 @@ jobs:
           builder: "${{ steps.docker_buildx.outputs.name }}"
           files: |
             "${{ matrix.image }}/docker-bake.hcl"
-            "${{ steps.docker_meta.outputs.bake-file-tags }}"
-            "${{ steps.docker_meta.outputs.bake-file-labels }}"
+            "cwd://${{ steps.docker_meta.outputs.bake-file-tags }}"
+            "cwd://${{ steps.docker_meta.outputs.bake-file-labels }}"
           load: ${{ github.event_name == 'pull_request' }}
           provenance: ${{ github.event_name != 'pull_request' }}
           push: ${{ github.event_name != 'pull_request' }}
