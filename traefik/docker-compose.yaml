@@ -1,20 +1,23 @@
+networks:
+  traefik:
+    external: true
+
 services:
   traefik:
     image: "traefik:v3"
     container_name: "traefik"
-    hostname: "traefik"
-    restart: "unless-stopped"
-    security_opt:
-      - "no-new-privileges:true"
-    networks:
-      - "proxy"
-    ports:
-      - "80:80"
-      - "443:443"
     environment:
       CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN}
       TRAEFIK_DASHBOARD_CREDENTIALS: ${TRAEFIK_DASHBOARD_CREDENTIALS}
-    env_file: ".env"
+    hostname: "traefik"
+    networks:
+      - "traefik"
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: "unless-stopped"
+    security_opt:
+      - "no-new-privileges:true"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
@@ -23,7 +26,7 @@ services:
       - "./data/config.yml:/config.yml:ro"
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=proxy"
+      - "traefik.docker.network=traefik"
       - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
       - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
@@ -36,7 +39,3 @@ services:
       - "traefik.http.routers.traefik-secure.tls.domains[0].main=localhost"
       - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.localhost"
       - "traefik.http.routers.traefik-secure.service=api@internal"
-
-networks:
-  proxy:
-    external: true

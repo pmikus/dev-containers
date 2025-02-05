@@ -1,89 +1,149 @@
+networks:
+  traefik:
+    external: true
+  ollama:
+    external: true
+
+volumes:
+  open-webui-data:
+  ollama-data:
+  whisper-data:
+
 services:
   ollama:
+    image: "${OLLAMA_IMAGE}"
     container_name: "ollama"
-    image: "ollama/ollama:latest"
-    hostname: "ollama"
-    networks:
-      - "proxy"
     environment:
       - "PUID=${PUID:-1000}"
       - "PGID=${PGID:-1000}"
-      - "OLLAMA_KEEP_ALIVE=24h"
-      - "ENABLE_IMAGE_GENERATION=True"
-      - "COMFYUI_BASE_URL=http://comfyui:8188"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-      - "./ollama:/root/.ollama"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.ollama.entrypoints=https"
-      - "traefik.http.routers.ollama.tls=true"
-      - "traefik.http.routers.ollama.middlewares=default-headers@file"
-      - "traefik.http.routers.ollama.middlewares=ollama-auth"
-      - "traefik.http.services.ollama.loadbalancer.server.port=11434"
-      - "traefik.http.routers.ollama.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=${OLLAMA_API_CREDENTIALS}"
+      - "OLLAMA_KEEP_ALIVE=${OLLAMA_KEEP_ALIVE:-24h}"
+      - "GIN_MODE=release"
     extends:
       file: "../extends/hwaccel.ml.yml"
       service: "cpu" # set to one of [armnn, cuda, openvino, openvino-wsl]
+    healthcheck:
+      test: "ollama --version"
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    hostname: "ollama"
+    networks:
+      - "ollama"
+      - "traefik"
+    restart: "unless-stopped"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "ollama-data:/root/.ollama"
+    labels:
+      # Enable Traefik for this container
+      - "traefik.enable=true"
+      # Use the secure entry point
+      - "traefik.http.routers.ollama.entrypoints=https"
+      # Enable TLS on this router
+      - "traefik.http.routers.ollama.tls=true"
+      # Define the internal container port for routing
+      - "traefik.http.services.ollama.loadbalancer.server.port=11434"
+      - "traefik.http.routers.ollama.middlewares=default-headers@file"
+      - "traefik.http.routers.ollama.middlewares=ollama-auth"
+      - "traefik.http.routers.ollama.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=${OLLAMA_API_CREDENTIALS}"
+      # Specify which Docker network Traefik should use for routing
+      - "traefik.docker.network=traefik"
 
   open-webui:
+    image: "${OPEN_WEBUI_IMAGE}"
     container_name: "open-webui"
-    image: "ghcr.io/open-webui/open-webui:latest"
-    hostname: "open-webui"
-    networks:
-      - "proxy"
-    restart: "unless-stopped"
+    depends_on:
+      - "ollama"
     environment:
       - "PUID=${PUID:-1000}"
       - "PGID=${PGID:-1000}"
       - "PORT=8080"
-      - "OLLAMA_BASE_URL=http://ollama:11434"
-      - "ENABLE_IMAGE_GENERATION=True"
-      - "COMFYUI_BASE_URL=http://comfyui:8188"
-      - "ENABLE_RAG_WEB_SEARCH=True"
-      - "RAG_WEB_SEARCH_ENGINE=searxng"
-      - "RAG_WEB_SEARCH_RESULT_COUNT=3"
-      - "RAG_WEB_SEARCH_CONCURRENT_REQUESTS=10"
-      - "SEARXNG_QUERY_URL=http://searxng:8080/search?q=<query>"
+      - "OLLAMA_BASE_URL=${OLLAMA_BASE_URL}"
+      - "ENABLE_IMAGE_GENERATION=${ENABLE_IMAGE_GENERATION:-True}"
+      - "COMFYUI_BASE_URL=${COMFYUI_BASE_URL}"
+      - "ENABLE_RAG_WEB_SEARCH=${ENABLE_RAG_WEB_SEARCH:-True}"
+      - "RAG_WEB_SEARCH_ENGINE=${RAG_WEB_SEARCH_ENGINE:-searxng}"
+      - "RAG_WEB_SEARCH_RESULT_COUNT=${RAG_WEB_SEARCH_RESULT_COUNT:-3}"
+      - "RAG_WEB_SEARCH_CONCURRENT_REQUESTS=${RAG_WEB_SEARCH_CONCURRENT_REQUESTS:-10}"
+      - "SEARXNG_QUERY_URL=${SEARXNG_QUERY_URL}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: "timeout 10s bash -c ':> /dev/tcp/127.0.0.1/8080' || exit 1"
+      interval: "10s"
+      timeout: "5s"
+      retries: "3"
+      start_period: "90s"
+    hostname: "open-webui"
+    networks:
+      - "ollama"
+      - "traefik"
+    restart: "unless-stopped"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-      - "./open-webui:/app/backend/data"
+      - "open-webui-data:/app/backend/data"
     labels:
+      # Enable Traefik for this container
       - "traefik.enable=true"
+      # Use the secure entry point
       - "traefik.http.routers.open-webui.entrypoints=https"
-      - "traefik.http.routers.open-webui.tls=true"
+      # Enable TLS on this router
+      - "traefik.http.routers.webui.tls=true"
+      # Define the internal container port for routing
       - "traefik.http.services.open-webui.loadbalancer.server.port=8080"
-    depends_on:
-      - "ollama"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      # Use Let's Encrypt for certificate management
+      #- "traefik.http.routers.open-webui.tls.certresolver=letsencrypt"
+      # Specify which Docker network Traefik should use for routing
+      - "traefik.docker.network=traefik"
 
   searxng:
+    image: "${SEARXNG_IMAGE}"
     container_name: "searxng"
-    image: "searxng/searxng:latest"
-    hostname: "searxng"
-    networks:
-      - "proxy"
-    restart: "unless-stopped"
+    depends_on:
+      - "ollama"
     environment:
       - "PUID=${PUID:-1000}"
       - "PGID=${PGID:-1000}"
+    hostname: "searxng"
+    networks:
+      - "traefik"
+    restart: "unless-stopped"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
       - "./searxng:/etc/searxng:rw"
-    depends_on:
-      - "ollama"
-      - "open-webui"
     labels:
+      # Enable Traefik for this container
       - "traefik.enable=true"
+      # Use the secure entry point
       - "traefik.http.routers.searxng.entrypoints=https"
+      # Enable TLS on this router
       - "traefik.http.routers.searxng.tls=true"
+      # Define the internal container port for routing
       - "traefik.http.services.searxng.loadbalancer.server.port=8080"
+      # Specify which Docker network Traefik should use for routing
+      - "traefik.docker.network=traefik"
 
-networks:
-  proxy:
-    external: true
+  translate:
+    image: "${TRANSLATE_IMAGE}"
+    container_name: "libretranslate"
+    environment:
+      - "PUID=${PUID:-1000}"
+      - "PGID=${PGID:-1000}"
+      - "LT_DISABLE_WEB_UI=${LT_DISABLE_WEB_UI:-True}"
+      - "LT_LOAD_ONLY=${LT_LOAD_ONLY:-en,sk}"
+      - "LT_UPDATE_MODELS=${LT_UPDATE_MODELS:-True}"
+    extends:
+      file: "../extends/hwaccel.ml.yml"
+      service: "cpu" # set to one of [armnn, cuda, openvino, openvino-wsl]
+    hostname: "libretranslate"
+    restart: "unless-stopped"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "./whisper/libretranslate/data:/home/libretranslate/.local/share"
+      - "./whisper/libretranslate/cache:/home/libretranslate/.local/cache"

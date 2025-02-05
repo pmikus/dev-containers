@@ -1,21 +1,26 @@
+networks:
+  traefik:
+    external: true
+
 services:
   tilde:
     container_name: "tilde"
     image: "nginx:latest"
     hostname: "tilde"
     networks:
-      - "proxy"
+      - "traefik"
     restart: "unless-stopped"
     volumes:
       - "./web:/usr/share/nginx/html:ro"
     labels:
+      # Enable Traefik for this container
       - "traefik.enable=true"
-      - "traefik.docker.network=proxy"
+      # Use the secure entry point
       - "traefik.http.routers.tilde.entrypoints=https"
+      # Enable TLS on this router
       - "traefik.http.routers.tilde.tls=true"
+      # Define the internal container port for routing
       - "traefik.http.services.tilde.loadbalancer.server.port=80"
       - "traefik.http.services.tilde.loadbalancer.server.scheme=http"
-
-networks:
-  proxy:
-    external: true
+      # Specify which Docker network Traefik should use for routing
+      - "traefik.docker.network=traefik"

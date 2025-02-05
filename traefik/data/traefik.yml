@@ -7,11 +7,11 @@ api:
 entryPoints:
   http:
     address: ":80"
-#    http:
-#      redirections:
-#        entryPoint:
-#          to: https
-#          scheme: https
+    http:
+      redirections:
+        entryPoint:
+          to: https
+          scheme: https
   https:
     address: ":443"
 global:
@@ -33,7 +33,7 @@ tracing:
 #certificatesResolvers:
 #  cloudflare:
 #    acme:
-#      email: peter.mikus@protonmail.com
+#      email: peter.mikus@icloud.com
 #      storage: acme.json
 #      # caServer: https://acme-v02.api.letsencrypt.org/directory # prod (default)
 #      caServer: https://acme-staging-v02.api.letsencrypt.org/directory # staging

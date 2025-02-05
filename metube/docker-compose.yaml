@@ -1,21 +1,26 @@
+networks:
+  traefik:
+    external: true
+
 services:
   metube:
     container_name: "metube"
     image: "ghcr.io/alexta69/metube"
     hostname: "metube"
     networks:
-      - "proxy"
+      - "traefik"
     restart: "unless-stopped"
     volumes:
       - "${HOME}/downloads:/downloads"
     labels:
+      # Enable Traefik for this container
       - "traefik.enable=true"
-      - "traefik.docker.network=proxy"
+      # Use the secure entry point
       - "traefik.http.routers.metube.entrypoints=https"
+      # Enable TLS on this router
       - "traefik.http.routers.metube.tls=true"
+      # Define the internal container port for routing
       - "traefik.http.services.metube.loadbalancer.server.port=8081"
       - "traefik.http.services.metube.loadbalancer.server.scheme=http"
-
-networks:
-  proxy:
-    external: true
+      # Specify which Docker network Traefik should use for routing
+      - "traefik.docker.network=traefik"
