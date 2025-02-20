@@ -5,37 +5,11 @@ networks:
     external: true
 
 volumes:
-  anything-llm-data:
   open-webui-data:
   ollama-data:
   whisper-data:
 
 services:
-  anything-llm:
-    image: "mintplexlabs/anythingllm:master"
-    container_name: "anything-llm"
-    depends_on:
-      - "ollama"
-    environment:
-      - "STORAGE_DIR=/app/server/storage"
-    hostname: "anything-llm"
-    labels:
-      # Enable Traefik for this container
-      - "traefik.enable=true"
-      # Use the secure entry point
-      - "traefik.http.routers.anything-llm.entrypoints=https"
-      # Enable TLS on this router
-      - "traefik.http.routers.anything-llm.tls=true"
-      # Define the internal container port for routing
-      - "traefik.http.services.anything-llm.loadbalancer.server.port=3001"
-      # Specify which Docker network Traefik should use for routing
-      - "traefik.docker.network=traefik"
-    networks:
-      - "traefik"
-      - "ollama"
-    volumes:
-      - "anything-llm-data:/app/server/storage"
-
   ollama:
     image: "${OLLAMA_IMAGE}"
     container_name: "ollama"

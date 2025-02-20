@@ -4,7 +4,7 @@ networks:
 
 services:
   comfyui:
-    image: "pmikus/stable-diffusion-comfy-ui:latest"
+    image: "pmikus/stable-diffusion-comfy-ui:0.2.4-cpu"
     build:
       context: .
       dockerfile: "Dockerfile"
@@ -23,7 +23,7 @@ services:
       - "COMFYUI_URL=${COMFYUI_URL:-}"
     extends:
       file: ../extends/hwaccel.ml.yml
-      service: cuda # set to one of [armnn, cpu, cuda, openvino, openvino-wsl]
+      service: cpu # set to one of [armnn, cpu, cuda, openvino, openvino-wsl]
     networks:
       - "traefik"
     platform: "linux/amd64"
