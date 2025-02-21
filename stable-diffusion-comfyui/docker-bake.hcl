@@ -31,6 +31,7 @@ target "cpu" {
     args = {
         RELEASE = "${RELEASE}"
         BASE_IMAGE = "pmikus/ai-base:0.0.1-cpu"
+        CPU_FLAG = "--cpu"
     }
 }
 
@@ -46,5 +47,6 @@ target "cuda-12-4-1" {
     args = {
         RELEASE = "${RELEASE}"
         BASE_IMAGE = "pmikus/ai-base:0.0.1-cuda12.4.1"
+        CPU_FLAG = "--gpu"
     }
 }

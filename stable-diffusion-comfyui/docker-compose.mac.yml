@@ -4,7 +4,7 @@ networks:
 
 services:
   comfyui:
-    image: "pmikus/stable-diffusion-comfy-ui:0.2.4-cpu"
+    image: "pmikus/stable-diffusion-comfy-ui:latest"
     build:
       context: .
       dockerfile: "Dockerfile"
