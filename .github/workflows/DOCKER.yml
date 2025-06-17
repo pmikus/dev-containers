@@ -30,14 +30,6 @@ jobs:
           #- "ai-base"
           - "stable-diffusion-comfyui"
     steps:
-      - name: "Free Disk Space Before Build"
-        run: |
-          "rm -rf /usr/local/.ghcup"
-          "rm -rf /usr/local/lib/android"
-          "rm -rf /usr/share/dotnet"
-          "rm -rf /opt/ghc"
-          "rm -rf /usr/local/share/boost"
-
       - name: "Checkout repository."
         uses: "actions/checkout@v4"
 
