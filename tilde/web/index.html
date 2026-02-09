@@ -39,19 +39,16 @@
 
   // prettier-ignore
   const COMMANDS = new Map([
+    ['i', { name: 'iCloud', suggestions: ['i/mail', 'i/iclouddrive'], url: 'https://icloud.com' }],
     ['g', { name: 'GitHub', searchTemplate: '/search?q={}', suggestions: ['g/copilot', 'g/trending'], url: 'https://github.com' }],
     ['h', { name: 'HuggingFace', searchTemplate: 'search/full-text?q={}', suggestions: ['h/models', 'h/spaces'], url: 'https://huggingface.co' }],
     ['d', { name: 'DeepSeek', url: 'https://deepseek.com' }],
-    ['p', { name: 'Proton', searchTemplate: '/u/0/all-mail#keyword={}', suggestions: ['p/drive', 'p/pass'], url: 'https://mail.proton.me/u/0/inbox' }],
-    ['p/drive', { url: 'https://drive.proton.me/u/0/' }],
-    ['p/pass', { url: 'https://pass.proton.me/u/0/' }],
+    ['o', { name: 'ChatGPT', url: 'https://chatgpt.com' }],
     ['r', { name: 'Reddit', url: 'https://reddit.com' }],
-    ['x', { name: 'self-hosted', suggestions: ['x/metube', 'x/comfy-ui', 'x/jellyfin', 'x/open-webui', 'x/pihole', 'x/traefik'], url: 'https://tilde.localhost' }],
+    ['x', { name: 'self-hosted', suggestions: ['x/metube', 'x/comfy-ui', 'x/open-webui', 'x/traefik'], url: 'https://tilde.localhost' }],
     ['x/metube', { url: 'https://metube.localhost' }],
     ['x/comfy-ui', { url: 'https://comfy-ui.localhost' }],
-    ['x/jellyfin', { url: 'https://jellyfin.localhost' }],
     ['x/open-webui', { url: 'https://open-webui.localhost' }],
-    ['x/pihole', { url: 'https://pihole.localhost' }],
     ['x/traefik', { url: 'https://traefik.localhost' }],
     ['y', { name: 'Youtube', searchTemplate: '/results?search_query={}', url: 'https://youtube.com' }],
     ['0', { name: 'local', suggestions: ['0:3000'], url: 'http://localhost:3000' }],

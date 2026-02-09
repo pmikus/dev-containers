@@ -5,13 +5,16 @@ networks:
 services:
   tilde:
     container_name: "tilde"
-    image: "nginx:latest"
+    image: "caddy"
     hostname: "tilde"
     networks:
       - "traefik"
     restart: "unless-stopped"
+    security_opt:
+      - "no-new-privileges:true"
     volumes:
-      - "./web:/usr/share/nginx/html:ro"
+      - "./web:/var/www/html:ro"
+      - "./Caddyfile:/etc/caddy/Caddyfile"
     labels:
       # Enable Traefik for this container
       - "traefik.enable=true"
