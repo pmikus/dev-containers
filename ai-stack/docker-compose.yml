@@ -100,50 +100,50 @@ services:
       # Specify which Docker network Traefik should use for routing
       - "traefik.docker.network=traefik"
 
-  searxng:
-    image: "${SEARXNG_IMAGE}"
-    container_name: "searxng"
-    depends_on:
-      - "ollama"
-    environment:
-      - "PUID=${PUID:-1000}"
-      - "PGID=${PGID:-1000}"
-    hostname: "searxng"
-    networks:
-      - "traefik"
-    restart: "unless-stopped"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-      - "./searxng:/etc/searxng:rw"
-    labels:
-      # Enable Traefik for this container
-      - "traefik.enable=true"
-      # Use the secure entry point
-      - "traefik.http.routers.searxng.entrypoints=https"
-      # Enable TLS on this router
-      - "traefik.http.routers.searxng.tls=true"
-      # Define the internal container port for routing
-      - "traefik.http.services.searxng.loadbalancer.server.port=8080"
-      # Specify which Docker network Traefik should use for routing
-      - "traefik.docker.network=traefik"
-
-  translate:
-    image: "${TRANSLATE_IMAGE}"
-    container_name: "libretranslate"
-    environment:
-      - "PUID=${PUID:-1000}"
-      - "PGID=${PGID:-1000}"
-      - "LT_DISABLE_WEB_UI=${LT_DISABLE_WEB_UI:-True}"
-      - "LT_LOAD_ONLY=${LT_LOAD_ONLY:-en,sk}"
-      - "LT_UPDATE_MODELS=${LT_UPDATE_MODELS:-True}"
-    extends:
-      file: "../extends/hwaccel.ml.yml"
-      service: "cpu" # set to one of [armnn, cuda, openvino, openvino-wsl]
-    hostname: "libretranslate"
-    restart: "unless-stopped"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-      - "./whisper/libretranslate/data:/home/libretranslate/.local/share"
-      - "./whisper/libretranslate/cache:/home/libretranslate/.local/cache"
+#  searxng:
+#    image: "${SEARXNG_IMAGE}"
+#    container_name: "searxng"
+#    depends_on:
+#      - "ollama"
+#    environment:
+#      - "PUID=${PUID:-1000}"
+#      - "PGID=${PGID:-1000}"
+#    hostname: "searxng"
+#    networks:
+#      - "traefik"
+#    restart: "unless-stopped"
+#    volumes:
+#      - "/etc/localtime:/etc/localtime:ro"
+#      - "/etc/timezone:/etc/timezone:ro"
+#      - "./searxng:/etc/searxng:rw"
+#    labels:
+#      # Enable Traefik for this container
+#      - "traefik.enable=true"
+#      # Use the secure entry point
+#      - "traefik.http.routers.searxng.entrypoints=https"
+#      # Enable TLS on this router
+#      - "traefik.http.routers.searxng.tls=true"
+#      # Define the internal container port for routing
+#      - "traefik.http.services.searxng.loadbalancer.server.port=8080"
+#      # Specify which Docker network Traefik should use for routing
+#      - "traefik.docker.network=traefik"
+#
+#  translate:
+#    image: "${TRANSLATE_IMAGE}"
+#    container_name: "libretranslate"
+#    environment:
+#      - "PUID=${PUID:-1000}"
+#      - "PGID=${PGID:-1000}"
+#      - "LT_DISABLE_WEB_UI=${LT_DISABLE_WEB_UI:-True}"
+#      - "LT_LOAD_ONLY=${LT_LOAD_ONLY:-en,sk}"
+#      - "LT_UPDATE_MODELS=${LT_UPDATE_MODELS:-True}"
+#    extends:
+#      file: "../extends/hwaccel.ml.yml"
+#      service: "cpu" # set to one of [armnn, cuda, openvino, openvino-wsl]
+#    hostname: "libretranslate"
+#    restart: "unless-stopped"
+#    volumes:
+#      - "/etc/localtime:/etc/localtime:ro"
+#      - "/etc/timezone:/etc/timezone:ro"
+#      - "./whisper/libretranslate/data:/home/libretranslate/.local/share"
+#      - "./whisper/libretranslate/cache:/home/libretranslate/.local/cache"
