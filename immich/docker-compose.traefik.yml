@@ -17,10 +17,16 @@ services:
       - database
     restart: always
     networks:
-      - caddy
       - immich
+      - traefik
     healthcheck:
       disable: false
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.immich.tls=true
+      - traefik.http.services.immich.loadbalancer.server.scheme=http
+      - traefik.http.services.immich.loadbalancer.server.port=2283
 
 
   immich-machine-learning:
@@ -81,19 +87,33 @@ services:
     tty: true
     volumes:
       - ./config:/config
+      # - ./custom.css:/custom.css
+      # - ./offline-assets:/offline-assets
     restart: always
     networks:
-      - caddy
       - immich
+      - traefik
     healthcheck:
       test: ["CMD", "curl", "-f", "http://immich-kiosk:7000/health"]
       interval: 30s
       timeout: 5s
       retries: 3
       start_period: 10s
+    labels:
+      # Enable Traefik for this container
+      - "traefik.enable=true"
+      # Use the secure entry point
+      - "traefik.http.routers.immich-kiosk.entrypoints=https"
+      # Enable TLS on this router
+      - "traefik.http.routers.immich-kiosk.tls=true"
+      # Define the internal container port for routing
+      - "traefik.http.services.immich-kiosk.loadbalancer.server.port=7000"
+      - "traefik.http.services.immich-kiosk.loadbalancer.server.scheme=http"
+      # Specify which Docker network Traefik should use for routing
+      - "traefik.docker.network=traefik"
 
 networks:
-  caddy:
+  traefik:
     external: true
   immich:
     external: false

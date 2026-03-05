@@ -1,0 +1,12 @@
+home.localhost {
+	root * /srv
+	file_server
+}
+
+https://immich.localhost/* {
+	reverse_proxy immich:2283
+}
+
+https://immich-kiosk.localhost/* {
+	reverse_proxy immich-kiosk:7000
+}
