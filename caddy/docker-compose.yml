@@ -1,22 +1,24 @@
+networks:
+  caddy:
+    external: true
+
 services:
   caddy:
+    container_name: caddy
+    hostname: caddy
     image: caddy:latest
     networks:
       - caddy
-    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
       - "443:443/udp"
+    restart: unless-stopped
     volumes:
       - ./conf:/etc/caddy
       - ./site:/srv
       - caddy_data:/data
       - caddy_config:/config
-
-networks:
-  caddy:
-    external: true
 
 volumes:
   caddy_data:

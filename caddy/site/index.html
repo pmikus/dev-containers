@@ -6,16 +6,26 @@
 <title>~</title>
 
 <style>
+  @font-face {
+    font-family: 'SpaceGrotesk';
+    font-style: normal;
+    font-weight: normal;
+    src: url('./fonts/SpaceGrotesk-Regular.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'SpaceGrotesk';
+    font-style: normal;
+    font-weight: bold;
+    src: url('./fonts/SpaceGrotesk-Bold.woff2') format('woff2');
+  }
+
   :root {
-    --border-radius: 1rem;
     --color-background: #111;
     --color-text-subtle: #888;
-    --color-text: #ddd;
-    --font-family: -apple-system, Helvetica, sans-serif;
-    --font-size: clamp(16px, 1.6vw, 18px);
-    --font-weight-bold: 700;
-    --font-weight-normal: 400;
-    --space: 1rem;
+    --color-text: #eee;
+    --font-family: SpaceGrotesk, -apple-system, Helvetica, sans-serif;
+    --font-size: clamp(16px, 1.5vw, 18px);
     --transition-speed: 200ms;
   }
 
@@ -32,24 +42,25 @@
   const CONFIG = {
     commandPathDelimiter: '/',
     commandSearchDelimiter: ' ',
-    defaultSearchTemplate: 'https://google.com/search?q={}',
+    defaultSearchTemplate: 'https://duckduckgo.com/?q={}',
     openLinksInNewTab: true,
-    suggestionLimit: 6,
+    suggestionLimit: 4,
   };
 
   // prettier-ignore
   const COMMANDS = new Map([
+    ['a', { name: 'ai', suggestions: ['a/chatgpt', 'a/claude', 'a/gemini', 'a/deepkseek'], url: 'https://home.localhost' }],
+    ['a/chatgpt', { url: 'https://chatgpt.com' }],
+    ['a/claude', { url: 'https://claude.ai' }],
+    ['a/gemini', { url: 'https://gemini.google.com' }],
+    ['a/deepseek', { url: 'https://deepseek.com' }],
     ['i', { name: 'iCloud', suggestions: ['i/mail', 'i/iclouddrive'], url: 'https://icloud.com' }],
     ['g', { name: 'GitHub', searchTemplate: '/search?q={}', suggestions: ['g/copilot', 'g/trending'], url: 'https://github.com' }],
-    ['h', { name: 'HuggingFace', searchTemplate: 'search/full-text?q={}', suggestions: ['h/models', 'h/spaces'], url: 'https://huggingface.co' }],
-    ['d', { name: 'DeepSeek', url: 'https://deepseek.com' }],
-    ['o', { name: 'ChatGPT', url: 'https://chatgpt.com' }],
     ['r', { name: 'Reddit', url: 'https://reddit.com' }],
-    ['x', { name: 'self-hosted', suggestions: ['x/metube', 'x/comfy-ui', 'x/open-webui', 'x/traefik'], url: 'https://tilde.localhost' }],
+    ['x', { name: 'self-hosted', suggestions: ['x/metube', 'x/comfy-ui', 'x/open-webui'], url: 'https://home.localhost' }],
     ['x/metube', { url: 'https://metube.localhost' }],
     ['x/comfy-ui', { url: 'https://comfy-ui.localhost' }],
     ['x/open-webui', { url: 'https://open-webui.localhost' }],
-    ['x/traefik', { url: 'https://traefik.localhost' }],
     ['y', { name: 'Youtube', searchTemplate: '/results?search_query={}', url: 'https://youtube.com' }],
     ['0', { name: 'local', suggestions: ['0:3000'], url: 'http://localhost:3000' }],
     ['0:3000', { url: 'http://localhost:3000' }],
@@ -58,65 +69,64 @@
 
 <template id="commands-template">
   <style>
+    nav {
+      align-items: center;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      min-height: 100dvh;
+      padding: 4rem 0;
+      width: 100%;
+    }
+
     .commands {
-      column-gap: 0;
-      columns: 2;
+      display: inline-grid;
+      grid-template-columns: 1fr 1fr;
       list-style: none;
-      margin: 0 auto;
-      max-width: 23rem;
-      overflow: hidden;
+      margin: 0;
       padding: 0;
-      width: 100vw;
     }
 
     .command {
+      align-items: center;
+      color: var(--color-text);
       display: flex;
-      gap: var(--space);
+      height: 4em;
+      justify-content: center;
       outline: 0;
-      padding: var(--space);
       position: relative;
+      text-align: center;
       text-decoration: none;
-    }
-
-    .command::after {
-      background: var(--color-text-subtle);
-      content: ' ';
-      inset: 1px;
-      opacity: 0.05;
-      position: absolute;
-      transition: opacity var(--transition-speed);
-    }
-
-    .command:where(:focus, :hover)::after {
-      opacity: 0.1;
+      width: 4em;
     }
 
     .key {
-      color: var(--color-text);
-      display: inline-block;
-      text-align: center;
-      width: 3ch;
+      color: var(--color-text-subtle);
+      position: absolute;
+      transition: all var(--transition-speed);
+    }
+
+    .command:where(:focus, :hover) .key {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(1.5em) scale(0.9);
     }
 
     .name {
-      color: var(--color-text-subtle);
-      transition: color var(--transition-speed);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-1.5em) scale(0.9);
+      transition: all var(--transition-speed);
     }
 
     .command:where(:focus, :hover) .name {
-      color: var(--color-text);
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    @media (min-width: 23rem) {
+    @media (min-width: 60rem) {
       .commands {
-        border-radius: var(--border-radius);
-      }
-    }
-
-    @media (min-width: 62rem) {
-      .commands {
-        columns: 4;
-        max-width: 44rem;
+        grid-template-columns: repeat(11, 1fr);
       }
     }
   </style>
@@ -167,6 +177,7 @@
     input,
     button {
       -moz-appearance: none;
+      font-family: var(--font-family);
       -webkit-appearance: none;
       background: transparent;
       border: 0;
@@ -198,8 +209,8 @@
 
     .input {
       color: var(--color-text);
-      font-size: 3rem;
-      font-weight: var(--font-weight-bold);
+      font-size: 2rem;
+      font-weight: bold;
       padding: 0;
       text-align: center;
       width: 100%;
@@ -212,7 +223,7 @@
       flex-wrap: wrap;
       justify-content: center;
       list-style: none;
-      margin: var(--space) 0 0;
+      margin: 1rem 0 0;
       overflow: hidden;
       padding: 0;
     }
@@ -221,7 +232,7 @@
       color: var(--color-text);
       cursor: pointer;
       font-size: 1rem;
-      padding: var(--space);
+      padding: 1rem;
       position: relative;
       transition: color var(--transition-speed);
       white-space: nowrap;
@@ -234,12 +245,12 @@
 
     .suggestion::before {
       background-color: var(--color-text);
-      border-radius: calc(var(--border-radius) / 5);
+      border-radius: 0.1em;
       content: ' ';
-      inset: calc(var(--space) / 1.5) calc(var(--space) / 3);
+      inset: 0.9em 0.5em;
       opacity: 0;
       position: absolute;
-      transform: translateY(0.5em);
+      transform: translateY(0.3em) scale(0.9);
       transition: all var(--transition-speed);
       z-index: -1;
     }
@@ -417,14 +428,19 @@
 
       let suggestions = COMMANDS.get(oq.query)?.suggestions ?? [];
 
-      if (oq.search && suggestions.length < CONFIG.suggestionLimit) {
+      if (
+        oq.search?.length > 1 &&
+        suggestions.length < CONFIG.suggestionLimit
+      ) {
         const res = await Search.#fetchDuckDuckGoSuggestions(oq.search);
 
-        suggestions = suggestions.concat(
-          oq.splitBy
-            ? res.map((search) => `${oq.key}${oq.splitBy}${search}`)
-            : res
-        );
+        suggestions = suggestions
+          .concat(
+            oq.splitBy
+              ? res.map((search) => `${oq.key}${oq.splitBy}${search}`)
+              : res
+          )
+          .slice(0, CONFIG.suggestionLimit);
       }
 
       const nq = Search.#parseQuery(this.#input.value);
@@ -481,10 +497,9 @@
 
     #renderSuggestions(suggestions, query) {
       this.#suggestions.innerHTML = '';
-      const sliced = suggestions.slice(0, CONFIG.suggestionLimit);
       const template = document.getElementById('suggestion-template');
 
-      for (const [index, suggestion] of sliced.entries()) {
+      for (const [index, suggestion] of suggestions.entries()) {
         const clone = template.content.cloneNode(true);
         const ref = clone.querySelector('.suggestion');
         ref.dataset.index = index;
@@ -520,26 +535,13 @@
     font-family: var(--font-family);
     font-size: var(--font-size);
     line-height: 1.4;
+    user-select: none;
   }
 
   body {
     margin: 0;
   }
-
-  main {
-    align-items: center;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    min-height: 100dvh;
-    overflow: hidden;
-    padding: calc(var(--space) * 4) var(--space);
-    position: relative;
-    width: 100vw;
-  }
 </style>
 
-<main>
-  <commands-component></commands-component>
-  <search-component></search-component>
-</main>
+<commands-component></commands-component>
+<search-component></search-component>

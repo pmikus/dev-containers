@@ -10,3 +10,11 @@ https://immich.localhost/* {
 https://immich-kiosk.localhost/* {
 	reverse_proxy immich-kiosk:7000
 }
+
+https://metube.localhost/* {
+	reverse_proxy metube:8081
+}
+
+https://pihole.localhost/* {
+	reverse_proxy pihole:80
+}
