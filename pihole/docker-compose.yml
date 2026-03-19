@@ -1,5 +1,19 @@
+networks:
+  caddy:
+    external: true
+  dns:
+    driver: bridge
+
 services:
   pihole:
+    cap_add:
+      # See https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+      # Required if you are using Pi-hole as your DHCP server, else not needed
+      - NET_ADMIN
+      # Required if you are using Pi-hole as your NTP client to be able to set the host's system time
+      - SYS_TIME
+      # Optional, if Pi-hole should get some more processing time
+      - SYS_NICE
     container_name: pihole
     depends_on:
       - unbound
@@ -16,36 +30,25 @@ services:
     image: pihole/pihole:latest
     networks:
       - caddy
-      - dns_network
-    restart: unless-stopped
-    #ports:
+      - dns
+    ports:
+      # DNS Ports
+      - "53000:53/tcp"
+      - "53000:53/udp"
       # Uncomment the below if using Pi-hole as your DHCP Server
       #- 67:67/udp
       # Uncomment the line below if you are using Pi-hole as your NTP server
       #- 123:123/udp
+    restart: unless-stopped
     volumes:
       - ./pihole:/etc/pihole
       - ./dnsmasq:/etc/dnsmasq.d
-    cap_add:
-      # See https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
-      # Required if you are using Pi-hole as your DHCP server, else not needed
-      - NET_ADMIN
-      # Required if you are using Pi-hole as your NTP client to be able to set the host's system time
-      - SYS_TIME
-      # Optional, if Pi-hole should get some more processing time
-      - SYS_NICE
 
   unbound:
     container_name: unbound
     image: klutchell/unbound:latest
     networks:
-      - dns_network
+      - dns
     restart: unless-stopped
     volumes:
       - ./unbound:/etc/unbound/custom.conf.d
-
-networks:
-  caddy:
-    external: true
-  dns_network:
-    driver: bridge

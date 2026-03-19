@@ -3,6 +3,10 @@ home.localhost {
 	file_server
 }
 
+https://glance.localhost/* {
+	reverse_proxy glance:8080
+}
+
 https://immich.localhost/* {
 	reverse_proxy immich:2283
 }
@@ -16,5 +20,6 @@ https://metube.localhost/* {
 }
 
 https://pihole.localhost/* {
+    redir / /admin
 	reverse_proxy pihole:80
 }

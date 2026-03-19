@@ -1,6 +1,8 @@
 networks:
   caddy:
     external: true
+  dns:
+    external: true
 
 services:
   caddy:
@@ -9,6 +11,7 @@ services:
     image: caddy:latest
     networks:
       - caddy
+      - dns
     ports:
       - "80:80"
       - "443:443"

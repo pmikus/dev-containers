@@ -1,0 +1,56 @@
+- name: Home
+  # Optionally, if you only have a single page you can hide the desktop navigation for a cleaner look
+  # hide-desktop-navigation: true
+  columns:
+    - size: full
+      widgets:
+        - type: group
+          widgets:
+            - type: reddit
+              subreddit: arduino
+              show-thumbnails: true
+            - type: reddit
+              subreddit: selfhosted
+              show-thumbnails: true
+            - type: reddit
+              subreddit: esp32
+              show-thumbnails: true
+            - type: reddit
+              subreddit: fujifilm
+              show-thumbnails: true
+            - type: reddit
+              subreddit: streetphotography
+              show-thumbnails: true
+
+        - type: rss
+          style: vertical-list
+          collapse-after: 3
+          cache: 5m
+          feeds:
+            - url: http://rsshub:1200/telegram/channel/cz24news
+              title: cz24news
+
+        - type: videos
+          channels:
+            - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+
+    - size: small
+      widgets:
+        - type: calendar
+          first-day-of-week: monday
+
+        - type: weather
+          location: Sliac, Slovakia
+          units: metric # alternatively "imperial"
+          hour-format: 24h # alternatively "24h"
+          # Optionally hide the location from being displayed in the widget
+          hide-location: true
+
+        - type: releases
+          cache: 1d
+          # Without authentication the Github API allows for up to 60 requests per hour. You can create a
+          # read-only token from your Github account settings and use it here to increase the limit.
+          # token: ...
+          repositories:
+            - glanceapp/glance
+            - immich-app/immich

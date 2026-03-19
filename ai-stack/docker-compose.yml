@@ -1,5 +1,7 @@
 networks:
-  traefik:
+  caddy:
+    external: true
+  dns:
     external: true
   ollama:
     external: true
@@ -29,76 +31,14 @@ services:
       start_period: 30s
     hostname: "ollama"
     networks:
-      - "ollama"
-      - "traefik"
+      - ollama
+      - caddy
+      - dns
     restart: "unless-stopped"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
       - "ollama-data:/root/.ollama"
-    labels:
-      # Enable Traefik for this container
-      - "traefik.enable=true"
-      # Use the secure entry point
-      - "traefik.http.routers.ollama.entrypoints=https"
-      # Enable TLS on this router
-      - "traefik.http.routers.ollama.tls=true"
-      # Define the internal container port for routing
-      - "traefik.http.services.ollama.loadbalancer.server.port=11434"
-      - "traefik.http.routers.ollama.middlewares=default-headers@file"
-      - "traefik.http.routers.ollama.middlewares=ollama-auth"
-      - "traefik.http.routers.ollama.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=${OLLAMA_API_CREDENTIALS}"
-      # Specify which Docker network Traefik should use for routing
-      - "traefik.docker.network=traefik"
-
-  open-webui:
-    image: "${OPEN_WEBUI_IMAGE}"
-    container_name: "open-webui"
-    depends_on:
-      - "ollama"
-    environment:
-      - "PUID=${PUID:-1000}"
-      - "PGID=${PGID:-1000}"
-      - "PORT=8080"
-      - "OLLAMA_BASE_URL=${OLLAMA_BASE_URL}"
-      - "ENABLE_IMAGE_GENERATION=${ENABLE_IMAGE_GENERATION:-True}"
-      - "COMFYUI_BASE_URL=${COMFYUI_BASE_URL}"
-      - "ENABLE_RAG_WEB_SEARCH=${ENABLE_RAG_WEB_SEARCH:-True}"
-      - "RAG_WEB_SEARCH_ENGINE=${RAG_WEB_SEARCH_ENGINE:-searxng}"
-      - "RAG_WEB_SEARCH_RESULT_COUNT=${RAG_WEB_SEARCH_RESULT_COUNT:-3}"
-      - "RAG_WEB_SEARCH_CONCURRENT_REQUESTS=${RAG_WEB_SEARCH_CONCURRENT_REQUESTS:-10}"
-      - "SEARXNG_QUERY_URL=${SEARXNG_QUERY_URL}"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    healthcheck:
-      test: "timeout 10s bash -c ':> /dev/tcp/127.0.0.1/8080' || exit 1"
-      interval: "10s"
-      timeout: "5s"
-      retries: "3"
-      start_period: "90s"
-    hostname: "open-webui"
-    networks:
-      - "ollama"
-      - "traefik"
-    restart: "unless-stopped"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-      - "open-webui-data:/app/backend/data"
-    labels:
-      # Enable Traefik for this container
-      - "traefik.enable=true"
-      # Use the secure entry point
-      - "traefik.http.routers.open-webui.entrypoints=https"
-      # Enable TLS on this router
-      - "traefik.http.routers.open-webui.tls=true"
-      # Define the internal container port for routing
-      - "traefik.http.services.open-webui.loadbalancer.server.port=8080"
-      # Use Let's Encrypt for certificate management
-      #- "traefik.http.routers.open-webui.tls.certresolver=letsencrypt"
-      # Specify which Docker network Traefik should use for routing
-      - "traefik.docker.network=traefik"
 
 #  searxng:
 #    image: "${SEARXNG_IMAGE}"
@@ -110,23 +50,12 @@ services:
 #      - "PGID=${PGID:-1000}"
 #    hostname: "searxng"
 #    networks:
-#      - "traefik"
+#      - caddy
 #    restart: "unless-stopped"
 #    volumes:
 #      - "/etc/localtime:/etc/localtime:ro"
 #      - "/etc/timezone:/etc/timezone:ro"
 #      - "./searxng:/etc/searxng:rw"
-#    labels:
-#      # Enable Traefik for this container
-#      - "traefik.enable=true"
-#      # Use the secure entry point
-#      - "traefik.http.routers.searxng.entrypoints=https"
-#      # Enable TLS on this router
-#      - "traefik.http.routers.searxng.tls=true"
-#      # Define the internal container port for routing
-#      - "traefik.http.services.searxng.loadbalancer.server.port=8080"
-#      # Specify which Docker network Traefik should use for routing
-#      - "traefik.docker.network=traefik"
 #
 #  translate:
 #    image: "${TRANSLATE_IMAGE}"

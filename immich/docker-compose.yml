@@ -1,3 +1,9 @@
+networks:
+  caddy:
+    external: true
+  immich:
+    external: false
+
 services:
   immich-server:
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
@@ -22,7 +28,6 @@ services:
       - immich
     healthcheck:
       disable: false
-
 
   immich-machine-learning:
     container_name: immich_machine_learning
@@ -92,12 +97,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-
-networks:
-  caddy:
-    external: true
-  immich:
-    external: false
 
 volumes:
   model-cache:

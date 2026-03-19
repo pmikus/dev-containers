@@ -1,0 +1,44 @@
+
+networks:
+  rss:
+    external: true
+
+services:
+  rsshub:
+    environment:
+      NODE_ENV: production
+      CACHE_TYPE: redis
+      REDIS_URL: 'redis://redis:6379/'
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:1200/healthz']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    # two ways to enable puppeteer:
+    # * comment out marked lines, then use this image instead: diygod/rsshub:chromium-bundled
+    # * (consumes more disk space and memory) leave everything unchanged
+    image: diygod/rsshub # or ghcr.io/diygod/rsshub
+    ports:
+      - 1200:1200
+    networks:
+      - rss
+    restart: always
+    depends_on:
+      - redis
+
+  redis:
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+    image: redis:alpine
+    networks:
+      - rss
+    restart: always
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
