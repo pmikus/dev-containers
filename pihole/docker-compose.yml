@@ -29,19 +29,21 @@ services:
     hostname: pihole
     image: pihole/pihole:latest
     networks:
-      - caddy
       - dns
-    ports:
+      - caddy
+    #ports:
       # DNS Ports
-      - "53000:53/tcp"
-      - "53000:53/udp"
+      #- "53:53/tcp"
+      #- "53:53/udp"
       # Uncomment the below if using Pi-hole as your DHCP Server
       #- 67:67/udp
       # Uncomment the line below if you are using Pi-hole as your NTP server
       #- 123:123/udp
     restart: unless-stopped
     volumes:
+      # For persisting Pi-hole's databases and common configuration file
       - ./pihole:/etc/pihole
+      # Uncomment the below if you have custom dnsmasq config files that you want to persist. Not needed for most starting fresh with Pi-hole v6. If you're upgrading from v5 you and have used this directory before, you should keep it enabled for the first v6 container start to allow for a complete migration. It can be removed afterwards. Needs environment variable FTLCONF_misc_etc_dnsmasq_d: 'true'
       - ./dnsmasq:/etc/dnsmasq.d
 
   unbound:

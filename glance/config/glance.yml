@@ -6,7 +6,75 @@ theme:
   # will not be reflected until the browser cache is cleared (Ctrl+F5)
   custom-css-file: /assets/user.css
 
+define:
+  - &subreddit-settings
+    type: reddit
+    collapse-after: 5
+    show-thumbnails: true
+
 pages:
   # It's not necessary to create a new file for each page and include it, you can simply
   # put its contents here, though multiple pages are easier to manage when separated
-  - $include: home.yml
+  - name: Start
+    center-vertically: true
+    columns:
+      - size: full
+        widgets:
+          - type: search
+            autofocus: true
+
+          - type: server-stats
+            servers:
+              - type: local
+                name: Services
+
+          - type: docker-containers
+            hide-by-default: false
+
+          - type: split-column
+            max-columns: 2
+            widgets:
+            - type: calendar
+              first-day-of-week: monday
+
+            - type: weather
+              location: Sliac, Slovakia
+              units: metric # alternatively "imperial"
+              hour-format: 24h # alternatively "24h"
+              # Optionally hide the location from being displayed in the widget
+              hide-location: true
+
+  - name: News
+    center-vertically: true
+    columns:
+      - size: full
+        widgets:
+          - type: group
+            widgets:
+              - subreddit: arduino
+                <<: *subreddit-settings
+              - subreddit: selfhosted
+                <<: *subreddit-settings
+              - subreddit: esp32
+                <<: *subreddit-settings
+              - subreddit: fujifilm
+                <<: *subreddit-settings
+              - subreddit: streetphotography
+                <<: *subreddit-settings
+
+          - type: rss
+            style: vertical-list
+            collapse-after: 3
+            cache: 5m
+            feeds:
+              - url: http://rsshub:1200/telegram/channel/cz24news
+                title: cz24news
+
+          - type: videos
+            style: grid-cards
+            channels:
+              - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+              - UCajiMK_CY9icRhLepS8_3ug # Alex Ziskind
+              - UC9Rrud-8CaHokDtK9FszvRg # Github Awesome
+              - UCWQaM7SpSECp9FELz-cHzuQ # Dreams of Code
+              - UCbY9xX3_jW5c2fjlZVBI4cg # TheAIGRID

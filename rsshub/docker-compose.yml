@@ -5,10 +5,12 @@ networks:
 
 services:
   rsshub:
+    container_name: rsshub
     environment:
       NODE_ENV: production
       CACHE_TYPE: redis
       REDIS_URL: 'redis://redis:6379/'
+    hostname: rsshub
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost:1200/healthz']
       interval: 30s
@@ -27,12 +29,14 @@ services:
       - redis
 
   redis:
+    container_name: redis
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
       interval: 30s
       timeout: 10s
       retries: 5
       start_period: 5s
+    hostname: rsshub
     image: redis:alpine
     networks:
       - rss

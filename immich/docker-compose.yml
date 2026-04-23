@@ -4,6 +4,8 @@ networks:
   immich:
     external: false
 
+name: immich
+
 services:
   immich-server:
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}

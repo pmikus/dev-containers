@@ -7,6 +7,9 @@ networks:
 services:
   caddy:
     container_name: caddy
+    environment:
+      - CADDY_INGRESS_NETWORKS=caddy
+      - CADDY_DOCKER_CADDYFILE_PATH=/etc/caddy/Caddyfile
     hostname: caddy
     image: caddy:latest
     networks:
@@ -21,7 +24,6 @@ services:
       - ./conf:/etc/caddy
       - ./site:/srv
       - caddy_data:/data
-      - caddy_config:/config
 
 volumes:
   caddy_data:

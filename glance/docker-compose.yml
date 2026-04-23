@@ -9,6 +9,10 @@ networks:
 services:
   glance:
     container_name: glance
+    deploy:
+      resources:
+        limits:
+          memory: 128M
     env_file: .env
     hostname: glance
     image: glanceapp/glance
@@ -22,4 +26,4 @@ services:
       - ./assets:/app/assets
       - /etc/localtime:/etc/localtime:ro
       # Optionally, also mount docker socket if you want to use the docker containers widget
-      # - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
