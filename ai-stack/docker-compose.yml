@@ -14,32 +14,32 @@ volumes:
 services:
   ollama:
     image: "${OLLAMA_IMAGE}"
-    container_name: "ollama"
+    container_name: ollama
     dns:
       - 172.26.0.6
     environment:
+      - "NODE_TLS_REJECT_UNAUTHORIZED=${NODE_TLS_REJECT_UNAUTHORIZED:-0}"
+      - "OLLAMA_KEEP_ALIVE=${OLLAMA_KEEP_ALIVE:-24h}"
       - "PUID=${PUID:-1000}"
       - "PGID=${PGID:-1000}"
-      - "OLLAMA_KEEP_ALIVE=${OLLAMA_KEEP_ALIVE:-24h}"
-      - "GIN_MODE=release"
     extends:
       file: "../extends/hwaccel.ml.yml"
       service: "cpu" # set to one of [armnn, cuda, openvino, openvino-wsl]
     healthcheck:
-      test: "ollama --version"
-      interval: 10s
+      test: ["CMD", "ollama", "--version"]
+      interval: 15s
       timeout: 5s
       retries: 3
       start_period: 30s
-    hostname: "ollama"
+    hostname: ollama
     networks:
       - caddy
       - dns
-    restart: "unless-stopped"
+    restart: unless-stopped
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-      - "ollama-data:/root/.ollama"
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ollama-data:/root/.ollama
 
 #  searxng:
 #    image: "${SEARXNG_IMAGE}"
