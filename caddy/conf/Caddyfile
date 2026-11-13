@@ -23,3 +23,11 @@ https://pihole.localhost/* {
     redir / /admin
 	reverse_proxy pihole:80
 }
+
+https://ollama.localhost/* {
+	reverse_proxy ollama:11434
+}
+
+https://n8n.localhost/* {
+	reverse_proxy n8n:5678
+}
