@@ -20,9 +20,37 @@ networks:
 
 volumes:
   n8n-data:
+  ollama-data:
   sandbox-tls:
 
 services:
+  ollama:
+    image: ollama/ollama:latest
+#    dns:
+#      - 172.26.0.6
+    environment:
+      - "NODE_TLS_REJECT_UNAUTHORIZED=${NODE_TLS_REJECT_UNAUTHORIZED:-0}"
+      - "OLLAMA_KEEP_ALIVE=${OLLAMA_KEEP_ALIVE:-24h}"
+      - "PUID=${PUID:-1000}"
+      - "PGID=${PGID:-1000}"
+    extends:
+      file: "../extends/hwaccel.ml.yml"
+      service: cpu # set to one of [armnn, cuda, openvino, openvino-wsl]
+    healthcheck:
+      test: ["CMD", "ollama", "--version"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    networks:
+      - caddy
+      - dns
+      - ollama
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ollama-data:/root/.ollama
   sandbox-certs:
     image: ghcr.io/n8n-io/n8n-sandbox-service-api:${N8N_SANDBOX_VERSION}
     user: '0:0'

@@ -1,0 +1,41 @@
+networks:
+  caddy:
+    external: true
+  dns:
+    external: true
+  ollama:
+    external: true
+
+volumes:
+  ollama-data:
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+#    dns:
+#      - 172.26.0.6
+    environment:
+      - "NODE_TLS_REJECT_UNAUTHORIZED=${NODE_TLS_REJECT_UNAUTHORIZED:-0}"
+      - "OLLAMA_KEEP_ALIVE=${OLLAMA_KEEP_ALIVE:-24h}"
+      - "PUID=${PUID:-1000}"
+      - "PGID=${PGID:-1000}"
+    extends:
+      file: "../extends/hwaccel.ml.yml"
+      service: cpu # set to one of [armnn, cuda, openvino, openvino-wsl]
+    healthcheck:
+      test: ["CMD", "ollama", "--version"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    hostname: ollama
+    networks:
+      - caddy
+      - dns
+      - ollama
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ollama-data:/root/.ollama
